@@ -52,10 +52,7 @@ class MailService {
       return;
     }
 
-    ListMessagesResponse response =
-        await GmailApi(client).users.messages.list("me");
-
-    print(response.messages!.length.toString());
-    print(response.messages!.first.id.toString());
+    ListMessagesResponse response = await GmailApi(client).users.messages.list("me");
+    
   }
 }
