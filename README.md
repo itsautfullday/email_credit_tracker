@@ -1,4 +1,4 @@
-This project is a personal project for the purpose of ingesting transactions directly from a user's google account and directly adding them to a user's Expense tracker. 
+This is a personal project for the purpose of ingesting transactions directly from a user's google account and directly adding them to a user's Expense tracker. 
 
 Firstly this should be called an Email automated Debit Manager. This name is not simple hence we will name it Simple Expense tracker.
 
@@ -12,6 +12,7 @@ MVP as of 26/02/24 :
 Good to have features:
 1.Server storage of expense tracking on the basis of Google oAuth
 2.Sort and Filter of Expenses
+3.Multi device login : FAR FAR FAR INTO THE FUTURE
 
 
 Currently this will have no backend deployment necessary
@@ -30,7 +31,7 @@ TimedTransactionIngestor Class : Will manage the automated ingestion of transact
 View: UI(User Interface) layer. It provides the visualization of the data stored in the Model.
 Introduction view : Asks the user to google login
 TransactionsView: View class which deals with read and display
-TransactionsEditew: View class which deals with create and update of a transaction : has to be opened with a singular parameter of transaction ID, which if blank opens a blank slate for the same
+TransactionsEditView: View class which deals with create and update of a transaction : has to be opened with a singular parameter of transaction ID, which if blank opens a blank slate for the same
 
 
 
@@ -41,3 +42,18 @@ EmailLoginController : Will ask the user to google login and will create the Gma
 
 
 
+Execution:
+1. Create the Introduction View and the Introduction controller - boring but necessary work
+2. Create the login flow - Allow for a user's email access on the basis of successfull google login!
+4. Create the Transaction class, and the Transaction Manager
+5. Create the Transaction Upsert controller and the Transaction Insert flow
+6. Create the Transaction view flow
+7. Check save and load for transactions
+8. Add the TimedTransactionIngestor class : This should then interact with the GmailManager class and read the ingestions and add the unannotated expenses
+9. Beautification, documentation
+
+
+Ideas I want documented from this experience:
+1. Overall Documentation of a codebas3
+2. For Flutter Apps what and how to create a firebase google auth project that allows for reading of email : Good resources for the same
+3. 
