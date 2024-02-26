@@ -1,2 +1,2 @@
 1. Open https://docs.flutter.dev/data-and-backend/google-apis
-2. 
+2. Follow the cookbook : https://firebase.google.com/codelabs/firebase-auth-in-flutter-apps#0
