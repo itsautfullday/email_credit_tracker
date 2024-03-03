@@ -1,4 +1,4 @@
-import 'package:email_credit_tracker/Constants.dart';
+import 'package:email_credit_tracker/view/IntroductionView.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,8 +29,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         // Define the default brightness and colors.
+        scaffoldBackgroundColor: Color.fromRGBO(238, 231, 215, 1),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Color.fromARGB(1, 238, 231, 215),
+          seedColor: Color.fromRGBO(238, 231, 215, 1),
           // TRY THIS: Change to "Brightness.light"
           //           and see that all colors change
           //           to better contrast a light background.
@@ -60,22 +61,3 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class IntroductionView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    BorderRadius.circular(4);
-    
-    return Scaffold(
-      body: Center(
-          child: Container(
-        color: Theme.of(context).primaryColor,
-        child: Column(
-          children: [
-            Text(Constants.APP_NAME),
-            Text(Constants.INTRODUCTORY_TEXT),
-          ],
-        ),
-      )),
-    );
-  }
-}
