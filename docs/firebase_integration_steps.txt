@@ -39,3 +39,11 @@ index 0391438..d69cf95 100644
 
 Thread : https://stackoverflow.com/questions/68180736/org-gradle-api-invalidusercodeexception-querying-the-mapped-value-of-provider
 
+Download google services json : https://support.google.com/firebase/answer/7015592?hl=en#zippy=%2Cin-this-article
+Then move it to android/app
+
+Create sha1 key from your project root!
+Ensure your SHA1 key is added to your android project
+
+Enable your api by going to https://console.developers.google.com/apis/api/gmail.googleapis.com/overview?project=1080629874940: FOr the project you want to do for!
+

@@ -40,6 +40,10 @@ dependencies:
   firebase_ui_auth: ^1.10.0
   google_fonts: ^6.1.0
   dotted_border: ^2.1.0
+  googleapis: ^11.4.0
+  extension_google_sign_in_as_googleapis_auth: ^2.0.11
+  google_sign_in: ^6.1.6
+  googleapis_auth: ^1.4.1
 
 dev_dependencies:
   flutter_test:

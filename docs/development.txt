@@ -1,0 +1,2 @@
+1. Singleton pattern : https://medium.com/@ahmedtahaelelemy/singleton-in-flutter-7747bfda6d20
+2. MVC Arch : https://www.geeksforgeeks.org/mvc-framework-introduction/

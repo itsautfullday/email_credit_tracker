@@ -1,10 +1,12 @@
 import 'package:email_credit_tracker/Constants.dart';
+import 'package:email_credit_tracker/controller/IntroductionController.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 
 import 'CommonWidgets/DottedButton.dart';
 
 class IntroductionView extends StatelessWidget {
+  IntroductionController controller = new IntroductionController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +23,9 @@ class IntroductionView extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge),
             DottedButton(
                 text: "Login in with Google",
-                onPressed: () => {print("Yo mama")})
+                onPressed: () {
+                  controller.signInWithGoogle();
+                })
           ],
         ),
       )),
