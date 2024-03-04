@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/gmail/v1.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:googleapis_auth/googleapis_auth.dart' as gapis;
+import 'dart:convert';
 
 class GmailManager {
   GmailManager._internal_constructor() {
@@ -59,7 +60,31 @@ class GmailManager {
     } else {
       print("Length : " + messages.length.toString());
       for (int i = 0; i < messages.length; i++) {
-        print(messages[i].toJson().toString());
+        Message message =
+            await GmailApi(client).users.messages.get("me", messages[i].id!);
+
+        if (message.payload == null) {
+          print(message.toJson().toString());
+          continue;
+        }
+
+        message.payload!.headers!.forEach((header) {
+          print(header.toJson());
+        });
+
+        if (message.payload!.parts != null) {
+          message.payload!.parts!.forEach((part) {
+            part.headers!.forEach((header) {
+              print(header.toJson());
+            });
+            String decodedString = utf8.decode(part.body!.dataAsBytes);
+            // print("Body of part " + decodedString);
+          });
+        }
+
+        if (i > 10) {
+          break;
+        }
       }
     }
   }
