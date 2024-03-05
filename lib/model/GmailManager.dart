@@ -1,5 +1,6 @@
 //Best to have different
 //Manages all interactions with Google
+import 'package:email_credit_tracker/model/EmailContent.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/gmail/v1.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
@@ -43,12 +44,19 @@ class GmailManager {
     return googleSignIn.authenticatedClient();
   }
 
-  void getUserMail() async {
-    print("Caling getUserMail");
+  EmailContent _parseMessage(Message message) {
+    //Figure out from and to
+    //Figure out raw messsage
+    //This is present in the headers of the primary message part
+    //Have to figure out how to make raw!
+
+  }
+
+  Future<List<EmailContent>> getUserMail() async {
+    List<EmailContent> result = [];
     gapis.AuthClient? client = await _getAuthClient();
     if (client == null) {
-      print("Caling getUserMail return ");
-      return;
+      return result;
     }
 
     ListMessagesResponse response =
@@ -56,36 +64,21 @@ class GmailManager {
 
     List<Message>? messages = response.messages;
     if (messages == null) {
-      print("Message is null");
-    } else {
-      print("Length : " + messages.length.toString());
-      for (int i = 0; i < messages.length; i++) {
-        Message message =
-            await GmailApi(client).users.messages.get("me", messages[i].id!);
-
-        if (message.payload == null) {
-          print(message.toJson().toString());
-          continue;
-        }
-
-        message.payload!.headers!.forEach((header) {
-          print(header.toJson());
-        });
-
-        if (message.payload!.parts != null) {
-          message.payload!.parts!.forEach((part) {
-            part.headers!.forEach((header) {
-              print(header.toJson());
-            });
-            String decodedString = utf8.decode(part.body!.dataAsBytes);
-            // print("Body of part " + decodedString);
-          });
-        }
-
-        if (i > 10) {
-          break;
-        }
-      }
+      return result;
     }
+
+    for (int i = 0; i < messages.length; i++) {
+      Message message =
+          await GmailApi(client).users.messages.get("me", messages[i].id!);
+
+      if (message.payload == null) {
+        print("Message payload is null " + message.toJson().toString());
+        continue;
+      }
+
+      result.add(_parseMessage(message));
+    }
+
+    return result;
   }
 }
