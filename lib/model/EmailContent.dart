@@ -1,10 +1,11 @@
 class EmailContent {
   String? from;
-  String? to;
   String? emailTextRaw;
+  String? subject;
+  String? date; //TODO Rethink?
 
   @override
   String toString() {
-    return "From : ${from!} to: ${to!} email; ${emailTextRaw!}";
+    return "From : ${from!} subject : ${subject!} ";
   }
 }

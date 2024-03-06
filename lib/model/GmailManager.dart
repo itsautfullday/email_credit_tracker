@@ -45,11 +45,56 @@ class GmailManager {
   }
 
   EmailContent _parseMessage(Message message) {
-    //Figure out from and to
     //Figure out raw messsage
-    //This is present in the headers of the primary message part
-    //Have to figure out how to make raw!
+    Map<String, String> headers = Map();
+    message.payload!.headers!.forEach((element) {
+      headers[element.name!] = element.value!;
+    });
 
+    EmailContent emailContent = EmailContent();
+
+    if (headers.containsKey("From")) {
+      String fromHeader = headers["From"]!;
+      int indexOpen = fromHeader.indexOf("<");
+      int indexClose = fromHeader.indexOf(">");
+
+      if (indexClose == -1 && indexOpen == -1) {
+        emailContent.from = fromHeader!;
+      } else {
+        if (indexClose == -1 || indexOpen == -1) {
+          //Some condusing error case
+          print("Error while parsing email " + fromHeader!);
+          return emailContent;
+        }
+        emailContent.from = fromHeader.substring(indexOpen + 1, indexClose);
+      }
+    }
+
+    if (headers.containsKey("Subject")) {
+      emailContent.subject = headers["Subject"];
+    }
+
+    //For testing!
+
+    // if (emailContent.from == "credit_cards@icicibank.com") {
+    //   print(message.payload!.parts!.isEmpty.toString());
+    //   print(message.payload!.mimeType);
+    //   print(message.payload!.body!.data);
+    // }
+
+    if (message.payload!.parts != null && message.payload!.parts!.isNotEmpty) {
+      if (emailContent.from == "credit_cards@icicibank.com") {
+        print("Payload length " + message.payload!.parts!.length.toString());R
+      }
+      for (var element in message.payload!.parts!) {
+        if (emailContent.from == "credit_cards@icicibank.com") {
+          print(element.mimeType);
+          print(utf8.decode(element.body!.dataAsBytes));
+        }
+      }
+    }
+
+    return EmailContent();
   }
 
   Future<List<EmailContent>> getUserMail() async {
