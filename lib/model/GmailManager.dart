@@ -1,13 +1,14 @@
 //Best to have different
 //Manages all interactions with Google
 import 'package:email_credit_tracker/model/EmailContent.dart';
+import 'package:email_credit_tracker/model/EmailManager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/gmail/v1.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:googleapis_auth/googleapis_auth.dart' as gapis;
 import 'dart:convert';
 
-class GmailManager {
+class GmailManager extends EmailManager {
   GmailManager._internal_constructor() {
     print("Creating the internal constructor");
   }
@@ -44,7 +45,7 @@ class GmailManager {
     return googleSignIn.authenticatedClient();
   }
 
-  EmailContent _parseMessage(Message message) {
+  EmailContent? _parseMessage(Message message) {
     //Figure out raw messsage
     Map<String, String> headers = Map();
     message.payload!.headers!.forEach((element) {
@@ -63,8 +64,7 @@ class GmailManager {
       } else {
         if (indexClose == -1 || indexOpen == -1) {
           //Some condusing error case
-          print("Error while parsing email " + fromHeader!);
-          return emailContent;
+          return null;
         }
         emailContent.from = fromHeader.substring(indexOpen + 1, indexClose);
       }
@@ -74,27 +74,26 @@ class GmailManager {
       emailContent.subject = headers["Subject"];
     }
 
-    //For testing!
-
-    // if (emailContent.from == "credit_cards@icicibank.com") {
-    //   print(message.payload!.parts!.isEmpty.toString());
-    //   print(message.payload!.mimeType);
-    //   print(message.payload!.body!.data);
-    // }
-
-    if (message.payload!.parts != null && message.payload!.parts!.isNotEmpty) {
-      if (emailContent.from == "credit_cards@icicibank.com") {
-        print("Payload length " + message.payload!.parts!.length.toString());R
-      }
-      for (var element in message.payload!.parts!) {
-        if (emailContent.from == "credit_cards@icicibank.com") {
-          print(element.mimeType);
-          print(utf8.decode(element.body!.dataAsBytes));
-        }
-      }
+    if (headers.containsKey('Date')) {
+      emailContent.date = headers["Date"];
     }
 
-    return EmailContent();
+    if (message.payload!.parts != null && message.payload!.parts!.isNotEmpty) {
+      print(emailContent.from);
+      print(message.payload!.parts!.length);
+
+      if (message.payload!.parts!.length != 1) {
+        return null;
+      }
+
+      emailContent.elementType = message.payload!.parts!.first.mimeType;
+      emailContent.emailTextRaw =
+          utf8.decode(message.payload!.parts!.first.body!.dataAsBytes);
+
+      return emailContent;
+    }
+
+    return null;
   }
 
   Future<List<EmailContent>> getUserMail() async {
@@ -121,8 +120,13 @@ class GmailManager {
         continue;
       }
 
-      result.add(_parseMessage(message));
+      EmailContent? emailContent = _parseMessage(message);
+      if (emailContent != null) {
+        result.add(emailContent);
+      }
     }
+
+    print("After getting result len " + result!.length!.toString());
 
     return result;
   }

@@ -1,4 +1,3 @@
 1. Singleton pattern : https://medium.com/@ahmedtahaelelemy/singleton-in-flutter-7747bfda6d20
 2. MVC Arch : https://www.geeksforgeeks.org/mvc-framework-introduction/
 3. Parsing HTML Files : https://medium.com/flutter-community/parsing-html-in-dart-with-html-package-cd43c29cc460
-    q

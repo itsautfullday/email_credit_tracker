@@ -14,7 +14,13 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  initalizeApplication();
+
   runApp(const MyApp());
+}
+
+void initalizeApplication() {
+  
 }
 
 class MyApp extends StatelessWidget {
@@ -60,4 +66,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
