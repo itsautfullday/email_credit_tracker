@@ -20,7 +20,6 @@ void main() async {
 }
 
 void initalizeApplication() {
-  
 }
 
 class MyApp extends StatelessWidget {

@@ -47,6 +47,7 @@ dependencies:
   json_annotation: ^4.8.1
   html: ^0.15.4
   http: ^1.1.0
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:
