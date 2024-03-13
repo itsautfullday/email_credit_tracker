@@ -33,8 +33,7 @@ class HDFCCreditCardTransactionsManager extends CreditCardTransactionsManager {
   }
 
   Transaction parseCreditCardTransactionFromEmail(EmailContent emailContent) {
-    printWrapped(emailContent.emailTextRaw!);
-    Document document = parse(html_hdfc_cc_data);
+    Document document = parse(emailContent.emailTextRaw!);
     Visitor _visitor = Visitor();
     _visitor.visit(document!.body!);
 

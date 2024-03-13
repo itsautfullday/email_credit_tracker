@@ -1,5 +1,9 @@
 //I hate the name of this class!
+//Still hate the name of this class
+import 'dart:convert';
+
 import 'package:email_credit_tracker/Constants.dart';
+import 'package:email_credit_tracker/FileUtility.dart';
 import 'package:email_credit_tracker/model/BankTransactionsManager.dart';
 import 'package:email_credit_tracker/model/EmailManager.dart';
 import 'package:email_credit_tracker/model/HDFCTransactionManager.dart';
@@ -29,43 +33,84 @@ class AutoIngestionManager {
     "alerts@hdfcbank.net": HDFCUPITransactionManager(),
   };
 
+  void debugWriteEmailContentRaw(
+      EmailContent content, String nameOfFile) async {
+    await FileUtil.writeToFile(
+        nameOfFile, jsonEncode(content.toJson()).toString(),
+        forceCreate: true);
+    print("File exists ? $nameOfFile ${await FileUtil.fileExist(nameOfFile)}");
+  }
+
+  void addTransactionFromEmail(
+      EmailContent email, Map<String, int> fileWrites) {
+    if (!_emailToBanksCCManager.containsKey(email.from) &&
+        !_emailToBanksUPIManager.containsKey(email.from)) {
+      return;
+    }
+    print("Checking email from " + email!.from!);
+    // debugWriteEmailContentRaw(
+    // email, email.from! + fileWrites[email.from!]!.toString());
+    Transaction? transaction;
+
+    if (_emailToBanksCCManager.containsKey(email.from)) {
+      CreditCardTransactionsManager manager =
+          _emailToBanksCCManager[email.from]!;
+      if (manager.isCreditCardTransaction(email)) {
+        print("yes is cc type transaction");
+        transaction = manager.parseCreditCardTransactionFromEmail(email);
+      }
+    } else {
+      UPITransactionsManager manager = _emailToBanksUPIManager[email.from]!;
+      if (manager.isUPITransaction(email)) {
+        transaction = manager.parseUPITransactionFromEmail(email);
+      }
+    }
+
+    if (transaction == null) {
+      return;
+    }
+
+    int status =
+        TransactionsManager.instance.addTransactionToMasterList(transaction!);
+    if (status == Constants.STATUS_ERROR) {
+      print("Error in Adding transaction " + transaction!.toString());
+    }
+  }
+
   void ingestTransactionsFromEmail() async {
+    ingestTransactionsFromFile();
+    return;
     if (manager == null) {
       throw Exception('Email Manager not set!');
     }
+    Map<String, int> fileWrites = {};
 
     List<EmailContent> emails = await manager!.getUserMail();
     for (EmailContent email in emails) {
-      if (!_emailToBanksCCManager.containsKey(email.from) &&
-          !_emailToBanksUPIManager.containsKey(email.from)) {
-        continue;
+      if (!fileWrites.containsKey(email.from)) {
+        fileWrites[email.from!] = 0;
       }
 
-      Transaction? transaction;
+      addTransactionFromEmail(email, fileWrites);
+      fileWrites[email.from!] = fileWrites[email.from!]! + 1;
+    }
+  }
 
-      if (_emailToBanksCCManager.containsKey(email.from)) {
-        print("Checking for cc " + email.from!);
-        CreditCardTransactionsManager manager =
-            _emailToBanksCCManager[email.from]!;
-        if (manager.isCreditCardTransaction(email)) {
-          transaction = manager.parseCreditCardTransactionFromEmail(email);
-        }
-      } else {
-        UPITransactionsManager manager = _emailToBanksUPIManager[email.from]!;
-        if (manager.isUPITransaction(email)) {
-          transaction = manager.parseUPITransactionFromEmail(email);
-        }
-      }
+  void ingestTransactionsFromFile() async {
+    List<String> filesToRead = [
+      'credit_cards@icicibank.com0',
+      'alerts@hdfcbank.net0',
+      'alerts@hdfcbank.net1',
+      'credit_cards@icicibank.com1'
+    ];
 
-      if (transaction == null) {
-        continue;
-      }
-
-      int status =
-          TransactionsManager.instance.addTransactionToMasterList(transaction!);
-      if (status == Constants.STATUS_ERROR) {
-        print("Error in Adding transaction " + transaction!.toString());
-      }
+    for (int i = 0; i < filesToRead.length; i++) {
+      String name = filesToRead[i];
+      String fileContent = await FileUtil.readFile(name);
+      print(fileContent);
+      Map<String, dynamic> json = jsonDecode(fileContent);
+      EmailContent email = EmailContent.fromJson(json);
+      addTransactionFromEmail(email, {});
     }
   }
 }

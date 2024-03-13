@@ -25,6 +25,11 @@ class IntroductionView extends StatelessWidget {
                 text: "Login in with Google",
                 onPressed: () {
                   controller.signInWithGoogle();
+                }),
+            DottedButton(
+                text: "Fetch Email Data",
+                onPressed: () {
+                  controller.debugIngestTransactionsFromEmail();
                 })
           ],
         ),

@@ -1,3 +1,5 @@
+import 'package:email_credit_tracker/model/AutoIngestionManager.dart';
+import 'package:email_credit_tracker/model/GmailManager.dart';
 import 'package:email_credit_tracker/view/IntroductionView.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,7 @@ void main() async {
 }
 
 void initalizeApplication() {
+  AutoIngestionManager.instance.manager = GmailManager.instance;
 }
 
 class MyApp extends StatelessWidget {
