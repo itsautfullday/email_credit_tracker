@@ -1,17 +1,23 @@
 import 'dart:io';
 import 'package:email_credit_tracker/Constants.dart';
+import 'package:path_provider/path_provider.dart';
 
 //Gave in and CHAT GPTed this class
 class FileUtil {
   // 1. Check if file exists
   static Future<bool> fileExist(String path) async {
-    return File(path).exists();
+    final localPath = await _localPath;
+    String actualPath = '$localPath/$path';
+    return File(actualPath).exists();
   }
 
   // 2. Write to file
   static Future<void> writeToFile(String path, String content,
-      {int insertionType = Constants.FILE_OVERWRITE, bool forceCreate = false}) async {
-    final file = File(path);
+      {int insertionType = Constants.FILE_OVERWRITE,
+      bool forceCreate = false}) async {
+    final localPath = await _localPath;
+    String actualPath = '$localPath/$path';
+    final file = File(actualPath);
 
     if (!forceCreate && !await fileExist(path)) {
       throw Exception('File does not exist at $path');
@@ -26,9 +32,16 @@ class FileUtil {
     }
   }
 
+  static Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
+
   // 3. Read file
   static Future<String> readFile(String path) async {
-    final file = File(path);
+    final localPath = await _localPath;
+    String actualPath = '$localPath/$path';
+    final file = File(actualPath);
 
     if (!await fileExist(path)) {
       throw Exception('File does not exist at $path');
