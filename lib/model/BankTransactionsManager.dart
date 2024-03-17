@@ -8,5 +8,5 @@ abstract class UPITransactionsManager {
 
 abstract class CreditCardTransactionsManager {
   bool isCreditCardTransaction(EmailContent emailContent);
-  Transaction parseCreditCardTransactionFromEmail(EmailContent emailContent);
+    Transaction parseCreditCardTransactionFromEmail(EmailContent emailContent);
 }

@@ -10,11 +10,47 @@ class HDFCUPITransactionManager extends UPITransactionsManager {
   HDFCUPITransactionManager() : super();
 
   bool isUPITransaction(EmailContent emailContent) {
+    print(
+        "Checking isUPI ${emailContent.from == "alerts@hdfcbank.net"} ${emailContent.subject} ${emailContent.subject!.contains('You have done a UPI txn')}");
+    if (emailContent.from == "alerts@hdfcbank.net" &&
+        emailContent.subject!.contains('You have done a UPI txn')) {
+      return true;
+    }
     return false;
   }
 
   Transaction parseUPITransactionFromEmail(EmailContent emailContent) {
-    return Transaction(0, "", "", "", 0);
+    Document document = parse(emailContent.emailTextRaw!);
+    Visitor _visitor = Visitor();
+    _visitor.visit(document!.body!);
+
+    //Sun, 17 Mar 2024 13:53:24 +0530
+    DateFormat format = new DateFormat("E, dd MMM yyyy HH:mm:ss");
+    DateTime dateTime = format.parse(emailContent.date!);
+
+    print("Date Email : " + dateTime.toString());
+    print(_visitor.result);
+
+    RegExp vpaRegex = RegExp(r'VPA\s(.*?)(?=\d+\.\d{2}|on)');
+    RegExp amountRegex = RegExp(r'Rs\.(\d+\.\d{2})');
+    Match? vpaMatch = vpaRegex.firstMatch(emailContent.emailTextRaw!);
+    Match? amountMatch = amountRegex.firstMatch(emailContent.emailTextRaw!);
+
+    print(vpaMatch != null);
+    print(amountMatch != null);
+    if (vpaMatch != null && amountMatch != null) {
+      String vpaString = vpaMatch.group(1)!;
+      String amountString = amountMatch.group(1)!;
+
+      double amount = double.parse(amountString);
+
+      return Transaction(amount.toInt(), vpaString, "HDFC UPI Transaction", "",
+          dateTime.millisecondsSinceEpoch);
+    } else {
+      print("No match found");
+    }
+
+    throw Exception("HDFC UPI unable to parse transaction");
   }
 }
 
@@ -77,7 +113,6 @@ class HDFCCreditCardTransactionsManager extends CreditCardTransactionsManager {
     if (atIndex == -1 || onIndex == -1) {
       print("Error $atIndex $onIndex");
       return Transaction(0, "", "", "", 0);
-      ;
     }
 
     String label = "";
@@ -94,7 +129,8 @@ class HDFCCreditCardTransactionsManager extends CreditCardTransactionsManager {
     DateFormat format = new DateFormat("dd-MM-yyyy HH:mm:ss");
     DateTime dateTime = format.parse(timestampString);
 
-    return Transaction(amount.toInt(), label, "HDFC Credit Card", "", 0);
+    return Transaction(amount.toInt(), label, "HDFC Credit Card", "",
+        dateTime.millisecondsSinceEpoch);
   }
 }
 

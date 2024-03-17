@@ -49,26 +49,26 @@ class AutoIngestionManager {
     }
     print("Checking email from " + email!.from!);
     // debugWriteEmailContentRaw(
-    // email, email.from! + fileWrites[email.from!]!.toString());
+    //     email, email.from! + fileWrites[email.from!]!.toString());
+    // print(email.emailTextRaw);
+
     Transaction? transaction;
 
-    if (_emailToBanksCCManager.containsKey(email.from)) {
-      CreditCardTransactionsManager manager =
-          _emailToBanksCCManager[email.from]!;
-      if (manager.isCreditCardTransaction(email)) {
-        print("yes is cc type transaction");
-        transaction = manager.parseCreditCardTransactionFromEmail(email);
-      }
-    } else {
-      UPITransactionsManager manager = _emailToBanksUPIManager[email.from]!;
-      if (manager.isUPITransaction(email)) {
-        transaction = manager.parseUPITransactionFromEmail(email);
-      }
+    if (_emailToBanksCCManager.containsKey(email.from) &&
+        _emailToBanksCCManager[email.from]!.isCreditCardTransaction(email)) {
+      transaction = _emailToBanksCCManager[email.from]!
+          .parseCreditCardTransactionFromEmail(email);
+    } else if (_emailToBanksUPIManager.containsKey(email.from) &&
+        _emailToBanksUPIManager[email.from]!.isUPITransaction(email)) {
+      transaction = _emailToBanksUPIManager[email.from]!
+          .parseUPITransactionFromEmail(email);
     }
 
     if (transaction == null) {
       return;
     }
+
+    print("Adding transaction " + transaction.toString());
 
     int status =
         TransactionsManager.instance.addTransactionToMasterList(transaction!);
@@ -98,16 +98,13 @@ class AutoIngestionManager {
 
   void ingestTransactionsFromFile() async {
     List<String> filesToRead = [
-      'credit_cards@icicibank.com0',
       'alerts@hdfcbank.net0',
       'alerts@hdfcbank.net1',
-      'credit_cards@icicibank.com1'
     ];
 
     for (int i = 0; i < filesToRead.length; i++) {
       String name = filesToRead[i];
       String fileContent = await FileUtil.readFile(name);
-      print(fileContent);
       Map<String, dynamic> json = jsonDecode(fileContent);
       EmailContent email = EmailContent.fromJson(json);
       addTransactionFromEmail(email, {});

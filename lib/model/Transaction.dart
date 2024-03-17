@@ -15,6 +15,11 @@ class Transaction {
   int? timestamp;
   String? transactionId;
 
+  @override
+  String toString() {
+    return "${label} ${amount} ${DateTime.fromMillisecondsSinceEpoch(timestamp!).toString()}";
+  }
+
   factory Transaction.fromJson(Map<String, dynamic> json) =>
       _$TransactionFromJson(json);
 
