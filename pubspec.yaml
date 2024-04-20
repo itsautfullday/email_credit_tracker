@@ -42,12 +42,14 @@ dependencies:
   dotted_border: ^2.1.0
   googleapis: ^11.4.0
   extension_google_sign_in_as_googleapis_auth: ^2.0.11
+  date_field: 3.0.5
   google_sign_in: ^6.1.6
   googleapis_auth: ^1.4.1
   json_annotation: ^4.8.1
   html: ^0.15.4
   http: ^1.1.0
   intl: ^0.18.0
+  
 
 dev_dependencies:
   flutter_test:

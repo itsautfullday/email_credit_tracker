@@ -1,6 +1,8 @@
 import 'package:email_credit_tracker/model/AutoIngestionManager.dart';
 import 'package:email_credit_tracker/model/GmailManager.dart';
+import 'package:email_credit_tracker/model/TransactionsManager.dart';
 import 'package:email_credit_tracker/view/IntroductionView.dart';
+import 'package:email_credit_tracker/view/TransactionCreateUPDATE.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,8 +23,20 @@ void main() async {
   runApp(const MyApp());
 }
 
+void load() {
+  TransactionsManager.instance.loadTransactionsData();
+  GmailManager.instance.loadSignInStatus();
+}
+
+//TODO : Figure out where to use save!
+void save() {
+  TransactionsManager.instance.saveTransactionData();
+  GmailManager.instance.saveSignInStatus();
+}
+
 void initalizeApplication() {
   AutoIngestionManager.instance.manager = GmailManager.instance;
+  load();
 }
 
 class MyApp extends StatelessWidget {
@@ -64,7 +78,7 @@ class MyApp extends StatelessWidget {
           displaySmall: GoogleFonts.vt323(),
         ),
       ),
-      home: IntroductionView(),
+      home: CreateUpdateTransaction(),
     );
   }
 }

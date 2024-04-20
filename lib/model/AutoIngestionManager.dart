@@ -78,8 +78,8 @@ class AutoIngestionManager {
   }
 
   void ingestTransactionsFromEmail() async {
-    ingestTransactionsFromFile();
-    return;
+    // ingestTransactionsFromFile();
+    // return;
     if (manager == null) {
       throw Exception('Email Manager not set!');
     }
@@ -96,18 +96,18 @@ class AutoIngestionManager {
     }
   }
 
-  void ingestTransactionsFromFile() async {
-    List<String> filesToRead = [
-      'alerts@hdfcbank.net0',
-      'alerts@hdfcbank.net1',
-    ];
+  // void ingestTransactionsFromFile() async {
+  //   List<String> filesToRead = [
+  //     'alerts@hdfcbank.net0',
+  //     'alerts@hdfcbank.net1',
+  //   ];
 
-    for (int i = 0; i < filesToRead.length; i++) {
-      String name = filesToRead[i];
-      String fileContent = await FileUtil.readFile(name);
-      Map<String, dynamic> json = jsonDecode(fileContent);
-      EmailContent email = EmailContent.fromJson(json);
-      addTransactionFromEmail(email, {});
-    }
-  }
+  //   for (int i = 0; i < filesToRead.length; i++) {
+  //     String name = filesToRead[i];
+  //     String fileContent = await FileUtil.readFile(name);
+  //     Map<String, dynamic> json = jsonDecode(fileContent);
+  //     EmailContent email = EmailContent.fromJson(json);
+  //     addTransactionFromEmail(email, {});
+  //   }
+  // }
 }

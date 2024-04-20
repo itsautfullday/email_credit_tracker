@@ -9,6 +9,7 @@ import 'package:googleapis_auth/googleapis_auth.dart' as gapis;
 import 'dart:convert';
 
 class GmailManager extends EmailManager {
+
   GmailManager._internal_constructor() {
     print("Creating the internal constructor");
   }
@@ -43,6 +44,16 @@ class GmailManager extends EmailManager {
       throw Exception("Trying to fetch auth client before sign in");
     }
     return googleSignIn.authenticatedClient();
+  }
+
+  //TODO Implement
+  void loadSignInStatus(){
+
+  }
+
+  //TODO Implement
+  void saveSignInStatus(){
+
   }
 
   EmailContent? _parseMessage(Message message) {
