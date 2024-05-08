@@ -28,7 +28,8 @@ class CreateUpdateForm extends StatefulWidget {
 }
 
 class _CreateUpdateFormState extends State<CreateUpdateForm> {
-  TransactionCreateUpdateController controller = TransactionCreateUpdateController()
+  TransactionCreateUpdateController controller =
+      TransactionCreateUpdateController();
   bool isCreateForm = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Transaction? transaction;
@@ -57,7 +58,7 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
       alignment: Alignment.bottomCenter,
       child: Container(
         height:
-            500, // TODO UTKARSH Media query thia and do based off of percentage size of the screen
+            500, // TODO UTKARSH Media query thia and do based off of percentage sitze of the screen
         padding: EdgeInsets.all(20),
         child: Form(
           key: _formKey,
@@ -144,9 +145,11 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       if (isCreateForm) {
-                        controller.addTransaction(amount!, label, account, note, date!);
+                        controller.addTransaction(
+                            amount!, label, account, note, date!);
                       } else {
-                        controller.updateTransaction(amount!, label, account, note, date!, transaction!);
+                        controller.updateTransaction(
+                            amount!, label, account, note, date!, transaction!);
                       }
                     }
                   },

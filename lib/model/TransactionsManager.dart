@@ -25,6 +25,7 @@ class TransactionsManager {
     }
     String transactionsJson = await FileUtil.readFile(_TRANSACTIONS_WRITE_PATH);
     _allTransactions = jsonDecode(transactionsJson);
+    print("DATA LOADED : " + _allTransactions.length.toString());
   }
 
   void saveTransactionData() async {
