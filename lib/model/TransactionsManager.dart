@@ -21,19 +21,26 @@ class TransactionsManager {
     //Implement this
     bool fileExists = await FileUtil.fileExist(_TRANSACTIONS_WRITE_PATH);
     if (!fileExists) {
+      print("DATA LOADED : File does not exist");
       return;
     }
     String transactionsJson = await FileUtil.readFile(_TRANSACTIONS_WRITE_PATH);
-    _allTransactions = jsonDecode(transactionsJson);
+    Map<String, dynamic> transactionsRaw = jsonDecode(transactionsJson);
+    transactionsRaw.forEach(
+        (key, value) => _allTransactions[key] = Transaction.fromJson(value));
+
     print("DATA LOADED : " + _allTransactions.length.toString());
   }
 
-  void saveTransactionData() async {
+  Future<void> saveTransactionData() async {
     //For this we need a file util class that can write to file
     //Implement this data
+    print("Starting file write");
     await FileUtil.writeToFile(
         _TRANSACTIONS_WRITE_PATH, jsonEncode(_allTransactions),
         forceCreate: true);
+    print("File write complete" +
+        FileUtil.fileExist(_TRANSACTIONS_WRITE_PATH).toString());
   }
 
   List<Transaction> getTransactionFiltered() {
@@ -52,8 +59,24 @@ class TransactionsManager {
       return Constants.STATUS_ERROR;
     }
     _allTransactions[transaction.transactionId!] = transaction;
-    print("Added transaction " + transaction.toString());
     return Constants.STATUS_OK;
+  }
+
+  void debugAddTransactions() {
+    print("Calling debug add");
+    Transaction transaction1 = Transaction(100, "smokes", "cash", "",
+        (DateTime.now().subtract(Duration(days: 1))).millisecondsSinceEpoch);
+    Transaction transaction2 = Transaction(100, "smokes", "cash", "",
+        (DateTime.now().subtract(Duration(days: 1))).millisecondsSinceEpoch);
+    Transaction transaction3 = Transaction(100, "smokes", "cash", "",
+        (DateTime.now().subtract(Duration(days: 1))).millisecondsSinceEpoch);
+    Transaction transaction4 = Transaction(100, "smokes", "cash", "",
+        (DateTime.now().subtract(Duration(days: 1))).millisecondsSinceEpoch);
+    TransactionsManager._instance!.addTransactionToMasterList(transaction1);
+    TransactionsManager._instance!.addTransactionToMasterList(transaction2);
+    TransactionsManager._instance!.addTransactionToMasterList(transaction3);
+    TransactionsManager._instance!.addTransactionToMasterList(transaction4);
+    print("End debug add");
   }
 
   int updateTransactionInMasterList(

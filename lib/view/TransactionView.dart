@@ -80,6 +80,7 @@ class TransactionGridState extends State<TransactionGrid> {
 
   @override
   Widget build(BuildContext context) {
+    
     return DataTable(columns: [
       DataColumn(
           label: Text(
