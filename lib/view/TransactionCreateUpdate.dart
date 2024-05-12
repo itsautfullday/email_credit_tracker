@@ -129,7 +129,7 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                   suffixIcon: Icon(Icons.event_note),
                   hintText: 'Transaction time',
                 ),
-                mode: DateTimeFieldPickerMode.time,
+                mode: DateTimeFieldPickerMode.dateAndTime,
                 initialDate: date,
                 autovalidateMode: AutovalidateMode.always,
                 validator: (e) =>
@@ -151,6 +151,8 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                         controller.updateTransaction(
                             amount!, label, account, note, date!, transaction!);
                       }
+
+                      Navigator.pop(context);
                     }
                   },
                 ),

@@ -1,6 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:email_credit_tracker/controller/TransactionCreateUpdateController.dart';
 import 'package:email_credit_tracker/controller/TransactionViewController.dart';
 import 'package:email_credit_tracker/model/TransactionsManager.dart';
+import 'package:email_credit_tracker/view/CommonWidgets/ViewScaffold.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +12,9 @@ import 'package:provider/provider.dart';
 import '../model/Transaction.dart';
 
 import 'CommonWidgets/DottedButton.dart';
+import 'TransactionCreateUpdate.dart';
 
 //Stuff I want to accomplish -
-// 2. Add scaffold with header for the app
 // 2.5 Add the add transaction routing
 // 2.75  and back buttons routing?
 
@@ -23,11 +25,12 @@ class TransactionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    //TODO: In your notes take down the purpoose of the scaffold and Material App and BuildContext ka defintiions and use cases
+    return ViewScaffold(
         body: Container(
       padding: EdgeInsets.all(20),
       alignment: Alignment.center,
-      child: Column(children: [TransactionGrid()]),
+      child: Column(children: [TransactionGrid(), ActionButtonRow()]),
     ));
   }
 }
@@ -42,7 +45,12 @@ class ActionButtonRow extends StatelessWidget {
         DottedButton(
           text: "+",
           onPressed: () {
-            print("Implement add button utkarsh");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CreateUpdateTransaction(transaction: null)),
+            );
           },
         )
       ],
