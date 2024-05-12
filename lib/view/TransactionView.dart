@@ -9,7 +9,15 @@ import '../model/Transaction.dart';
 
 import 'CommonWidgets/DottedButton.dart';
 
-// Flutter code sample for [Form].
+//Stuff I want to accomplish - 
+// 4. Add load delay for the app - possibly with a simple Animation
+// 2. Add scaffold with header for the app
+// 2.5 Add the add transaction routing
+// 2.75  and back buttons routing?
+
+// 3. Add refresh button asset and ad the google email read Flow
+
+
 class TransactionView extends StatelessWidget {
   TransactionView({super.key});
 
@@ -17,12 +25,14 @@ class TransactionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
+      padding: EdgeInsets.all(20),
+      alignment: Alignment.center,
       child: Column(children: [TransactionGrid()]),
     ));
   }
 }
 
-//TODO Add
+//TODO Add ActionButtonRow
 class ActionButtonRow extends StatelessWidget {
   String addAsset = "";
   String refreshAsset = "";
@@ -30,17 +40,11 @@ class ActionButtonRow extends StatelessWidget {
     return Row(
       children: [
         DottedButton(
-          image: Image.asset(addAsset),
+          text: "+",
           onPressed: () {
             print("Implement add button utkarsh");
           },
-        ),
-        DottedButton(
-          image: Image.asset(refreshAsset),
-          onPressed: () {
-            print("Implement refreshAsset button utkarsh");
-          },
-        ),
+        )
       ],
     );
   }
@@ -80,7 +84,6 @@ class TransactionGridState extends State<TransactionGrid> {
 
   @override
   Widget build(BuildContext context) {
-    
     return DataTable(columns: [
       DataColumn(
           label: Text(

@@ -1,8 +1,6 @@
 import 'package:email_credit_tracker/model/AutoIngestionManager.dart';
 import 'package:email_credit_tracker/model/GmailManager.dart';
 import 'package:email_credit_tracker/model/TransactionsManager.dart';
-import 'package:email_credit_tracker/view/IntroductionView.dart';
-import 'package:email_credit_tracker/view/TransactionCreateUPDATE.dart';
 import 'package:email_credit_tracker/view/TransactionView.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +19,6 @@ void main() async {
   );
 
   initalizeApplication();
-
   runApp(MyApp());
 }
 
@@ -54,7 +51,7 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async{
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     switch (state) {
       case AppLifecycleState.resumed:
@@ -102,11 +99,16 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
           titleLarge: GoogleFonts.vt323(
             fontSize: 30,
           ),
-          bodyMedium: GoogleFonts.vt323(),
-          displaySmall: GoogleFonts.vt323(),
+          bodyMedium: GoogleFonts.vt323(
+            fontSize: 25,
+          ),
+          displaySmall: GoogleFonts.vt323(
+            fontSize: 10
+          ),
         ),
       ),
       home: TransactionView(),
     );
   }
 }
+
