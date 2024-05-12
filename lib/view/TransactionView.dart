@@ -1,22 +1,22 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:email_credit_tracker/controller/TransactionViewController.dart';
 import 'package:email_credit_tracker/model/TransactionsManager.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:googleapis/apigeeregistry/v1.dart';
+import 'package:provider/provider.dart';
 
 import '../model/Transaction.dart';
 
 import 'CommonWidgets/DottedButton.dart';
 
-//Stuff I want to accomplish - 
-// 4. Add load delay for the app - possibly with a simple Animation
+//Stuff I want to accomplish -
 // 2. Add scaffold with header for the app
 // 2.5 Add the add transaction routing
 // 2.75  and back buttons routing?
 
 // 3. Add refresh button asset and ad the google email read Flow
-
 
 class TransactionView extends StatelessWidget {
   TransactionView({super.key});
@@ -55,9 +55,7 @@ class TransactionGrid extends StatefulWidget {
 }
 
 class TransactionGridState extends State<TransactionGrid> {
-  List<DataRow> fetchTransactionsDataRow() {
-    List<Transaction> transactions =
-        TransactionsManager.instance.getAllTransactions();
+  List<DataRow> fetchTransactionsDataRow(List<Transaction> transactions) {
     List<DataRow> result = [];
     transactions.forEach((element) {
       result.add(getDataRowFromTransaction(element));
@@ -84,22 +82,33 @@ class TransactionGridState extends State<TransactionGrid> {
 
   @override
   Widget build(BuildContext context) {
-    return DataTable(columns: [
-      DataColumn(
-          label: Text(
-        'Label',
-        style: Theme.of(context).textTheme.bodyMedium,
-      )),
-      DataColumn(
-          label: Text(
-        'Amount',
-        style: Theme.of(context).textTheme.bodyMedium,
-      )),
-      DataColumn(
-          label: Text(
-        'Account',
-        style: Theme.of(context).textTheme.bodyMedium,
-      ))
-    ], rows: fetchTransactionsDataRow());
+    return ChangeNotifierProvider(
+        create: (context) => TransactionViewController.instance,
+        child: Consumer<TransactionViewController>(
+          builder: (context, value, child) {
+            if (value.updatedTransactions.isEmpty) {
+              return Text('Loading your transactions...',
+                  style: Theme.of(context).textTheme.bodyMedium);
+            }
+
+            return DataTable(columns: [
+              DataColumn(
+                  label: Text(
+                'Label',
+                style: Theme.of(context).textTheme.bodyMedium,
+              )),
+              DataColumn(
+                  label: Text(
+                'Amount',
+                style: Theme.of(context).textTheme.bodyMedium,
+              )),
+              DataColumn(
+                  label: Text(
+                'Account',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ))
+            ], rows: fetchTransactionsDataRow(value.updatedTransactions));
+          },
+        ));
   }
 }

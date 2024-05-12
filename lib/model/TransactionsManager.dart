@@ -16,7 +16,7 @@ class TransactionsManager {
   Map<String, Transaction> _allTransactions = {};
   String _TRANSACTIONS_WRITE_PATH = 'transactions_master.json';
 
-  void loadTransactionsData() async {
+  Future<void> loadTransactionsData() async {
     //For this we need a file util class that can write to file
     //Implement this
     bool fileExists = await FileUtil.fileExist(_TRANSACTIONS_WRITE_PATH);

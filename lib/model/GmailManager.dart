@@ -47,14 +47,14 @@ class GmailManager extends EmailManager {
   }
 
   //TODO Implement
-  void loadSignInStatus(){
+  // Future<void> loadSignInStatus(){
 
-  }
+  // }
 
-  //TODO Implement
-  void saveSignInStatus(){
+  // //TODO Implement
+  // void saveSignInStatus(){
 
-  }
+  // }
 
   EmailContent? _parseMessage(Message message) {
     //Figure out raw messsage
