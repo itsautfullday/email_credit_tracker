@@ -13,6 +13,12 @@ class TransactionsManager {
     return _instance!;
   }
 
+  bool _dataloadCompleted = false;
+
+  bool getDataLoadCompleted() {
+    return _dataloadCompleted;
+  }
+
   Map<String, Transaction> _allTransactions = {};
   String _TRANSACTIONS_WRITE_PATH = 'transactions_master.json';
 
@@ -22,6 +28,7 @@ class TransactionsManager {
     bool fileExists = await FileUtil.fileExist(_TRANSACTIONS_WRITE_PATH);
     if (!fileExists) {
       print("DATA LOADED : File does not exist");
+      _dataloadCompleted = true;
       return;
     }
     String transactionsJson = await FileUtil.readFile(_TRANSACTIONS_WRITE_PATH);
@@ -30,6 +37,7 @@ class TransactionsManager {
         (key, value) => _allTransactions[key] = Transaction.fromJson(value));
 
     print("DATA LOADED : " + _allTransactions.length.toString());
+    _dataloadCompleted = true;
   }
 
   Future<void> saveTransactionData() async {

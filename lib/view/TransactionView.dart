@@ -15,9 +15,6 @@ import 'CommonWidgets/DottedButton.dart';
 import 'TransactionCreateUpdate.dart';
 
 //Stuff I want to accomplish -
-// 2.5 Add the add transaction routing
-// 2.75  and back buttons routing?
-
 // 3. Add refresh button asset and ad the google email read Flow
 
 class TransactionView extends StatelessWidget {
@@ -27,11 +24,12 @@ class TransactionView extends StatelessWidget {
   Widget build(BuildContext context) {
     //TODO: In your notes take down the purpoose of the scaffold and Material App and BuildContext ka defintiions and use cases
     return ViewScaffold(
+        floatingActionButton: ActionButtonRow(),
         body: Container(
-      padding: EdgeInsets.all(20),
-      alignment: Alignment.center,
-      child: Column(children: [TransactionGrid(), ActionButtonRow()]),
-    ));
+          padding: EdgeInsets.all(20),
+          alignment: Alignment.topCenter,
+          child: TransactionGrid(),
+        ));
   }
 }
 
@@ -40,20 +38,23 @@ class ActionButtonRow extends StatelessWidget {
   String addAsset = "";
   String refreshAsset = "";
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        DottedButton(
-          text: "+",
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      CreateUpdateTransaction(transaction: null)),
-            );
-          },
-        )
-      ],
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          DottedButton(
+            text: "+",
+            onPressed: () {
+              TransactionViewController.instance.addTransaction(context);
+            },
+          ),
+          DottedButton(
+            text: "⟳",
+            onPressed: () {},
+          )
+        ],
+      ),
     );
   }
 }
@@ -63,28 +64,42 @@ class TransactionGrid extends StatefulWidget {
 }
 
 class TransactionGridState extends State<TransactionGrid> {
-  List<DataRow> fetchTransactionsDataRow(List<Transaction> transactions) {
+  List<DataRow> fetchTransactionsDataRow(
+      List<Transaction> transactions, BuildContext context) {
     List<DataRow> result = [];
     transactions.forEach((element) {
-      result.add(getDataRowFromTransaction(element));
+      result.add(getDataRowFromTransaction(element, context));
     });
     return result;
   }
 
-  DataRow getDataRowFromTransaction(Transaction? transaction) {
+  DataRow getDataRowFromTransaction(
+      Transaction? transaction, BuildContext context) {
     return DataRow(cells: [
-      DataCell(Text(
-        transaction!.label.toString(),
-        style: Theme.of(context).textTheme.bodyMedium,
-      )),
-      DataCell(Text(
-        transaction.amount.toString(),
-        style: Theme.of(context).textTheme.bodyMedium,
-      )),
-      DataCell(Text(
-        transaction.account.toString(),
-        style: Theme.of(context).textTheme.bodyMedium,
-      )),
+      DataCell(onTap: () {
+        TransactionViewController.instance
+            .editTransaction(context, transaction);
+      },
+          Text(
+            transaction!.label.toString(),
+            style: Theme.of(context).textTheme.bodyMedium,
+          )),
+      DataCell(onTap: () {
+        TransactionViewController.instance
+            .editTransaction(context, transaction);
+      },
+          Text(
+            transaction.amount.toString(),
+            style: Theme.of(context).textTheme.bodyMedium,
+          )),
+      DataCell(onTap: () {
+        TransactionViewController.instance
+            .editTransaction(context, transaction);
+      },
+          Text(
+            transaction.account.toString(),
+            style: Theme.of(context).textTheme.bodyMedium,
+          )),
     ]);
   }
 
@@ -94,28 +109,36 @@ class TransactionGridState extends State<TransactionGrid> {
         create: (context) => TransactionViewController.instance,
         child: Consumer<TransactionViewController>(
           builder: (context, value, child) {
-            if (value.updatedTransactions.isEmpty) {
+            if (value.shouldShowLoadingTransactionsMessage()) {
               return Text('Loading your transactions...',
                   style: Theme.of(context).textTheme.bodyMedium);
             }
 
-            return DataTable(columns: [
-              DataColumn(
-                  label: Text(
-                'Label',
-                style: Theme.of(context).textTheme.bodyMedium,
-              )),
-              DataColumn(
-                  label: Text(
-                'Amount',
-                style: Theme.of(context).textTheme.bodyMedium,
-              )),
-              DataColumn(
-                  label: Text(
-                'Account',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ))
-            ], rows: fetchTransactionsDataRow(value.updatedTransactions));
+            if (value.shouldShowNoTransactionsMessage()) {
+              return Text('Add some transactions!',
+                  style: Theme.of(context).textTheme.bodyMedium);
+            }
+
+            return DataTable(
+                columns: [
+                  DataColumn(
+                      label: Text(
+                    'Label',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  )),
+                  DataColumn(
+                      label: Text(
+                    'Amount',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  )),
+                  DataColumn(
+                      label: Text(
+                    'Account',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ))
+                ],
+                rows: fetchTransactionsDataRow(
+                    value.updatedTransactions, context));
           },
         ));
   }

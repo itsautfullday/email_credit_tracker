@@ -5,8 +5,4 @@ class IntroductionController {
   void signInWithGoogle() async {
     await GmailManager.instance.signIn();
   }
-
-  void debugIngestTransactionsFromEmail(){
-    AutoIngestionManager.instance.ingestTransactionsFromEmail();
-  }
 }

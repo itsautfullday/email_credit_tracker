@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 
 class ViewScaffold extends StatelessWidget {
   final Widget body;
+  Widget? floatingActionButton;
 
-  const ViewScaffold({
-    super.key,
-    required this.body,
-  });
+  ViewScaffold({super.key, required this.body, this.floatingActionButton});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +16,8 @@ class ViewScaffold extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium),
       ),
       body: this.body,
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
