@@ -1,15 +1,16 @@
 //Best to have different
 //Manages all interactions with Google
+import 'package:email_credit_tracker/Constants.dart';
 import 'package:email_credit_tracker/model/EmailContent.dart';
 import 'package:email_credit_tracker/model/EmailManager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/gmail/v1.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:googleapis_auth/googleapis_auth.dart' as gapis;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class GmailManager extends EmailManager {
-
   GmailManager._internal_constructor() {
     print("Creating the internal constructor");
   }
@@ -46,15 +47,16 @@ class GmailManager extends EmailManager {
     return googleSignIn.authenticatedClient();
   }
 
-  //TODO Implement
-  // Future<void> loadSignInStatus(){
+  Future<void> loadSignInStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final counter = prefs.getBool(Constants.SIGN_IN_STATUS) ?? 0;
+    return;
+  }
 
-  // }
-
-  // //TODO Implement
-  // void saveSignInStatus(){
-
-  // }
+  void saveSignInStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(Constants.SIGN_IN_STATUS, isUserSignedIn);
+  }
 
   EmailContent? _parseMessage(Message message) {
     //Figure out raw messsage

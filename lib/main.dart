@@ -2,6 +2,7 @@ import 'package:email_credit_tracker/controller/TransactionViewController.dart';
 import 'package:email_credit_tracker/model/AutoIngestionManager.dart';
 import 'package:email_credit_tracker/model/GmailManager.dart';
 import 'package:email_credit_tracker/model/TransactionsManager.dart';
+import 'package:email_credit_tracker/view/IntroductionView.dart';
 import 'package:email_credit_tracker/view/TransactionView.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -25,16 +26,15 @@ void main() async {
 
 void load() async {
   await TransactionsManager.instance.loadTransactionsData();
+  await GmailManager.instance.loadSignInStatus();
+
   TransactionViewController.instance.updateTransactionsView();
-  //TODO -- add implmentation
-  // await GmailManager.instance.loadSignInStatus();
 }
 
-//TODO : Figure out where to use save!
+//TODO : Figure out where to use save! -- add timely save flows as well!
 void save() async {
   await TransactionsManager.instance.saveTransactionData();
-  //TODO -- add implmentation
-  // GmailManager.instance.saveSignInStatus();
+  GmailManager.instance.saveSignInStatus();
 }
 
 void initalizeApplication() {
@@ -109,7 +109,7 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
           displaySmall: GoogleFonts.vt323(fontSize: 10),
         ),
       ),
-      home: TransactionView(),
+      home: IntroductionView(),
     );
   }
 }

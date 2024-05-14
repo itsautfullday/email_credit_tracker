@@ -4,6 +4,8 @@ import 'package:email_credit_tracker/Constants.dart';
 import 'package:email_credit_tracker/FileUtility.dart';
 import 'package:email_credit_tracker/model/Transaction.dart';
 
+import '../controller/TransactionViewController.dart';
+
 class TransactionsManager {
   TransactionsManager._internal_constructor();
 
@@ -38,6 +40,7 @@ class TransactionsManager {
 
     print("DATA LOADED : " + _allTransactions.length.toString());
     _dataloadCompleted = true;
+    
   }
 
   Future<void> saveTransactionData() async {
