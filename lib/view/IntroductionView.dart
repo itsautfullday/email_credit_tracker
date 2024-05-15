@@ -8,6 +8,7 @@ import 'CommonWidgets/DottedButton.dart';
 
 class IntroductionView extends StatelessWidget {
   IntroductionController controller = new IntroductionController();
+
   @override
   Widget build(BuildContext context) {
     return ViewScaffold(
@@ -15,11 +16,15 @@ class IntroductionView extends StatelessWidget {
           child: Container(
         alignment: Alignment.center,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(Constants.INTRODUCTORY_TEXT,
-                style: Theme.of(context).textTheme.titleLarge),
+            Container(
+              padding: EdgeInsets.all(20),
+              child: Text(Constants.INTRODUCTORY_TEXT,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium),
+            ),
             DottedButton(
                 text: "Login in with Google",
                 onPressed: () {

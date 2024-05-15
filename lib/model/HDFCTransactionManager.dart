@@ -95,7 +95,8 @@ class HDFCCreditCardTransactionsManager extends CreditCardTransactionsManager {
     //Hence the next one is the value of transaction
     //Similarly the elements between at and on are elements to be joined by space for the purpose of label of transaction
 
-    double amount = double.parse(hdfc_data_clean[first_rs_index + 1]);
+    double amount =
+        double.parse(hdfc_data_clean[first_rs_index + 1].replaceAll(',', ''));
 
     int atIndex = -1;
     int onIndex = -1;

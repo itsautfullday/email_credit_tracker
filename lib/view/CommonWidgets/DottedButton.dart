@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 
-
 //TODO : Add the other requirements of this class!
 class DottedButton extends StatelessWidget {
   static const int ONLY_TEXT = 0;
@@ -20,7 +19,7 @@ class DottedButton extends StatelessWidget {
       throw Exception("Dotted border created with no text and no image");
     }
 
-    if (this.onPressed == null){
+    if (this.onPressed == null) {
       throw Exception("No on pressed function has been passed");
     }
   }
@@ -32,8 +31,8 @@ class DottedButton extends StatelessWidget {
         radius: Radius.circular(12),
         child: TextButton(
             onPressed: onPressed,
-            child: Text(this.text!,
-                style: Theme.of(context).textTheme.titleLarge),
+            child:
+                Text(this.text!, style: Theme.of(context).textTheme.bodyMedium),
             style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(

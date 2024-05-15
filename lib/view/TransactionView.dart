@@ -39,7 +39,7 @@ class ActionButtonRow extends StatelessWidget {
   String refreshAsset = "";
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -51,7 +51,10 @@ class ActionButtonRow extends StatelessWidget {
           ),
           DottedButton(
             text: "⟳",
-            onPressed: () {},
+            onPressed: () {
+              print("Calling on pressed");
+              TransactionViewController.instance.refreshTransactionsFromEmail();
+            },
           )
         ],
       ),

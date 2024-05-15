@@ -48,9 +48,6 @@ class AutoIngestionManager {
       return;
     }
     print("Checking email from " + email!.from!);
-    // debugWriteEmailContentRaw(
-    //     email, email.from! + fileWrites[email.from!]!.toString());
-    // print(email.emailTextRaw);
 
     Transaction? transaction;
 
@@ -77,22 +74,20 @@ class AutoIngestionManager {
     }
   }
 
-  void ingestTransactionsFromEmail() async {
-    // ingestTransactionsFromFile();
-    // return;
+  Future<void> ingestTransactionsFromEmail() async {
+    print("Calling ingestTransactionsFromEmail");
     if (manager == null) {
       throw Exception('Email Manager not set!');
     }
     Map<String, int> fileWrites = {};
 
     List<EmailContent> emails = await manager!.getUserMail();
+    
     for (EmailContent email in emails) {
       if (!fileWrites.containsKey(email.from)) {
         fileWrites[email.from!] = 0;
       }
-
       addTransactionFromEmail(email, fileWrites);
-      fileWrites[email.from!] = fileWrites[email.from!]! + 1;
     }
   }
 

@@ -10,6 +10,8 @@ import 'package:googleapis_auth/googleapis_auth.dart' as gapis;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+import '../main.dart';
+
 class GmailManager extends EmailManager {
   GmailManager._internal_constructor() {
     print("Creating the internal constructor");
@@ -32,6 +34,9 @@ class GmailManager extends EmailManager {
     try {
       GoogleSignInAccount? signInAccount = await googleSignIn.signIn();
       isUserSignedIn = (signInAccount != null);
+
+      //Probably not the best way to do this
+      DataLoaded.instance.setDataLoaded(true);
     } catch (e) {
       print(e.toString());
       isUserSignedIn = false;
@@ -49,13 +54,16 @@ class GmailManager extends EmailManager {
 
   Future<void> loadSignInStatus() async {
     final prefs = await SharedPreferences.getInstance();
-    final counter = prefs.getBool(Constants.SIGN_IN_STATUS) ?? 0;
+    isUserSignedIn = prefs.getBool(Constants.SIGN_IN_STATUS) ?? false;
+    if (isUserSignedIn) {
+      await googleSignIn.signIn();
+    }
     return;
   }
 
-  void saveSignInStatus() async {
+  Future<bool> saveSignInStatus() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(Constants.SIGN_IN_STATUS, isUserSignedIn);
+    return await prefs.setBool(Constants.SIGN_IN_STATUS, isUserSignedIn);
   }
 
   EmailContent? _parseMessage(Message message) {
@@ -110,17 +118,22 @@ class GmailManager extends EmailManager {
   }
 
   Future<List<EmailContent>> getUserMail() async {
+    print("Calling get user mail");
     List<EmailContent> result = [];
     gapis.AuthClient? client = await _getAuthClient();
     if (client == null) {
+      print("Calling get client is null");
       return result;
     }
+
+    print("Calling get user whats up");
 
     ListMessagesResponse response =
         await GmailApi(client).users.messages.list("me");
 
     List<Message>? messages = response.messages;
     if (messages == null) {
+      print("Calling get user messsages is null?");
       return result;
     }
 

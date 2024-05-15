@@ -30,8 +30,9 @@ class TransactionViewController extends ChangeNotifier {
     return TransactionsManager.instance.getAllTransactions();
   }
 
-  void refreshTransactionsFromEmail() {
-    AutoIngestionManager.instance.ingestTransactionsFromEmail();
+  void refreshTransactionsFromEmail() async {
+    await AutoIngestionManager.instance.ingestTransactionsFromEmail();
+    notifyListeners();
   }
 
   void addTransaction(BuildContext context) {
