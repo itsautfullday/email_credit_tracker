@@ -7,6 +7,7 @@ class Constants {
 
   static const String APP_NAME = "Simple Debit Manager";
   static const String SIGN_IN_STATUS = "signInStatus";
+  static const String LAST_READ_ID = "lastReadID";
   static const String INTRODUCTORY_TEXT =
       "An application meant for a clean view of your debits in a systematic manner.";
 }

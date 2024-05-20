@@ -12,6 +12,10 @@ import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 
+// 1 Add the not-retrigger flow
+// 2 Add email last read ts for accurate data parsing
+// 4 Stress test - save and load flows
+
 void main() async {
   // tells Flutter not to start running the application widget code until the Flutter framework is completely booted. Firebase uses native platform channels, which require the framework to be running.
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,15 +30,15 @@ void main() async {
 }
 
 void load() async {
+  await GmailManager.instance.load();
   await TransactionsManager.instance.loadTransactionsData();
-  await GmailManager.instance.loadSignInStatus();
   TransactionViewController.instance.updateTransactionsView();
   DataLoaded.instance.setDataLoaded(true);
 }
 
 void save() async {
   await TransactionsManager.instance.saveTransactionData();
-  await GmailManager.instance.saveSignInStatus();
+  await GmailManager.instance.save();
 }
 
 void initalizeApplication() {
@@ -75,15 +79,16 @@ class EmailTransactionAppState extends State<EmailTransactionApp>
     super.didChangeAppLifecycleState(state);
     switch (state) {
       case AppLifecycleState.resumed:
-        save();
+        // save();
         break;
       case AppLifecycleState.inactive:
-        save();
+        // save();
         break;
       case AppLifecycleState.paused:
         save();
+        break;
       case AppLifecycleState.detached:
-        save();
+        // save();
         break;
     }
   }

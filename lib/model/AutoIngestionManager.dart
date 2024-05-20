@@ -82,6 +82,9 @@ class AutoIngestionManager {
     Map<String, int> fileWrites = {};
 
     List<EmailContent> emails = await manager!.getUserMail();
+    if (emails.isEmpty) {
+      return;
+    }
     
     for (EmailContent email in emails) {
       if (!fileWrites.containsKey(email.from)) {
@@ -90,19 +93,4 @@ class AutoIngestionManager {
       addTransactionFromEmail(email, fileWrites);
     }
   }
-
-  // void ingestTransactionsFromFile() async {
-  //   List<String> filesToRead = [
-  //     'alerts@hdfcbank.net0',
-  //     'alerts@hdfcbank.net1',
-  //   ];
-
-  //   for (int i = 0; i < filesToRead.length; i++) {
-  //     String name = filesToRead[i];
-  //     String fileContent = await FileUtil.readFile(name);
-  //     Map<String, dynamic> json = jsonDecode(fileContent);
-  //     EmailContent email = EmailContent.fromJson(json);
-  //     addTransactionFromEmail(email, {});
-  //   }
-  // }
 }

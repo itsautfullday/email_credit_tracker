@@ -1,18 +1,9 @@
-import 'package:dotted_border/dotted_border.dart';
-import 'package:email_credit_tracker/controller/TransactionCreateUpdateController.dart';
 import 'package:email_credit_tracker/controller/TransactionViewController.dart';
-import 'package:email_credit_tracker/model/TransactionsManager.dart';
 import 'package:email_credit_tracker/view/CommonWidgets/ViewScaffold.dart';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:googleapis/apigeeregistry/v1.dart';
 import 'package:provider/provider.dart';
-
 import '../model/Transaction.dart';
-
 import 'CommonWidgets/DottedButton.dart';
-import 'TransactionCreateUpdate.dart';
 
 //Stuff I want to accomplish -
 // 3. Add refresh button asset and ad the google email read Flow
@@ -122,26 +113,29 @@ class TransactionGridState extends State<TransactionGrid> {
                   style: Theme.of(context).textTheme.bodyMedium);
             }
 
-            return DataTable(
-                columns: [
-                  DataColumn(
-                      label: Text(
-                    'Label',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  )),
-                  DataColumn(
-                      label: Text(
-                    'Amount',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  )),
-                  DataColumn(
-                      label: Text(
-                    'Account',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ))
-                ],
-                rows: fetchTransactionsDataRow(
-                    value.updatedTransactions, context));
+            return InteractiveViewer(
+              constrained: false,
+              child: DataTable(
+                  columns: [
+                    DataColumn(
+                        label: Text(
+                      'Label',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Amount',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Account',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ))
+                  ],
+                  rows: fetchTransactionsDataRow(
+                      value.updatedTransactions, context)),
+            );
           },
         ));
   }
