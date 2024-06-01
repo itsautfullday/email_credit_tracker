@@ -3,10 +3,17 @@ This is a personal project for the purpose of ingesting transactions directly fr
 Firstly this should be called an Email automated Debit Manager. This name is not simple hence we will name it Simple Expense tracker.
 
 MVP as of 26/02/24 :
-1.CRUD operations on an Expense
+1.CRUD operations on an Expense 
 2.All Expenses viewable in a single list
 3.Automated Email reading and Creation of Expenses
 4.Highlighting of Email read expenses and their annotation flow
+
+MVP Update as of 1/06/24
+1.CRU operations on an Expense :white_check_mark:
+2.Delete operation yet to be added : not P0 
+2.All Expenses viewable in a single list :white_check_mark:
+3.Automated Email reading and Creation of Expenses :white_check_mark:
+4.Highlighting of Email read expenses and their annotation flow : not done, not P0
 
 
 Good to have features:
@@ -56,4 +63,4 @@ Execution:
 Ideas I want documented from this experience:
 1. Overall Documentation of a codebas3
 2. For Flutter Apps what and how to create a firebase google auth project that allows for reading of email : Good resources for the same
-3. 
+3. Usage od providers etc
