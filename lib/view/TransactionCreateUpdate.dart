@@ -132,7 +132,6 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                 mode: DateTimeFieldPickerMode.dateAndTime,
                 initialDate: date,
                 autovalidateMode: AutovalidateMode.always,
-                // (e?.day ?? 0) == 1 ? 'Please not the first day' : null
                 validator: (DateTime? e) {
                   return null;
                 },
