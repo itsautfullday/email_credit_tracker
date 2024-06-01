@@ -11,6 +11,7 @@ import 'package:email_credit_tracker/model/ICICITransactionsManager.dart';
 import 'package:email_credit_tracker/model/Transaction.dart';
 import 'package:email_credit_tracker/model/TransactionsManager.dart';
 
+import '../main.dart';
 import 'EmailContent.dart';
 
 class AutoIngestionManager {
@@ -85,12 +86,15 @@ class AutoIngestionManager {
     if (emails.isEmpty) {
       return;
     }
-    
+
     for (EmailContent email in emails) {
       if (!fileWrites.containsKey(email.from)) {
         fileWrites[email.from!] = 0;
       }
       addTransactionFromEmail(email, fileWrites);
     }
+
+
+    AppDataManager.instance.save();
   }
 }

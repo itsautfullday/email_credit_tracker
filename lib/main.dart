@@ -29,20 +29,30 @@ void main() async {
   runApp(EmailTransactionApp());
 }
 
-void load() async {
-  await GmailManager.instance.load();
-  await TransactionsManager.instance.loadTransactionsData();
-  TransactionViewController.instance.updateTransactionsView();
-  DataLoaded.instance.setDataLoaded(true);
-}
+class AppDataManager {
+  AppDataManager._();
 
-void save() async {
-  await TransactionsManager.instance.saveTransactionData();
-  await GmailManager.instance.save();
+  static AppDataManager? _instance;
+  static AppDataManager get instance {
+    _instance ??= AppDataManager._();
+    return _instance!;
+  }
+
+  void load() async {
+    await GmailManager.instance.load();
+    await TransactionsManager.instance.loadTransactionsData();
+    TransactionViewController.instance.updateTransactionsView();
+    DataLoaded.instance.setDataLoaded(true);
+  }
+
+  void save() async {
+    await TransactionsManager.instance.saveTransactionData();
+    await GmailManager.instance.save();
+  }
 }
 
 void initalizeApplication() {
-  load();
+  AppDataManager.instance.load();
   AutoIngestionManager.instance.manager = GmailManager.instance;
 }
 
@@ -85,7 +95,7 @@ class EmailTransactionAppState extends State<EmailTransactionApp>
         // save();
         break;
       case AppLifecycleState.paused:
-        save();
+        AppDataManager.instance.save();
         break;
       case AppLifecycleState.detached:
         // save();

@@ -68,7 +68,8 @@ class HDFCCreditCardTransactionsManager extends CreditCardTransactionsManager {
     return false;
   }
 
-  Transaction parseCreditCardTransactionFromEmail(EmailContent emailContent) {
+  @override
+  Transaction? parseCreditCardTransactionFromEmail(EmailContent emailContent) {
     Document document = parse(emailContent.emailTextRaw!);
     Visitor _visitor = Visitor();
     _visitor.visit(document!.body!);
@@ -101,6 +102,7 @@ class HDFCCreditCardTransactionsManager extends CreditCardTransactionsManager {
     int atIndex = -1;
     int onIndex = -1;
 
+
     for (int i = first_rs_index; i < hdfc_data_clean.length; i++) {
       if (hdfc_data_clean[i] == 'at') {
         atIndex = i;
@@ -113,7 +115,7 @@ class HDFCCreditCardTransactionsManager extends CreditCardTransactionsManager {
 
     if (atIndex == -1 || onIndex == -1) {
       print("Error $atIndex $onIndex");
-      return Transaction(0, "", "", "", 0);
+      return null;
     }
 
     String label = "";

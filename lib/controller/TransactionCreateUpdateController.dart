@@ -15,13 +15,32 @@ class TransactionCreateUpdateController {
     }
   }
 
-  void updateTransaction(int amount, String label, String account, String note,
-      DateTime date, Transaction transaction) {
-    transaction!.amount = amount;
-    transaction!.account = account;
-    transaction!.label = label;
-    transaction!.note = note;
-    transaction!.timestamp = date!.millisecondsSinceEpoch;
+  void updateTransaction(int? amount, String? label, String? account,
+      String? note, DateTime? date, Transaction transaction) {
+    try {
+      if (amount != null) {
+        transaction!.amount = amount;
+      }
+
+      if (account != null) {
+        transaction!.account = account;
+      }
+
+      if (label != null) {
+        transaction!.label = label;
+      }
+
+      if (note != null) {
+        transaction!.note = note;
+      }
+
+      if (date != null) {
+        transaction!.timestamp = date!.millisecondsSinceEpoch;
+      }
+    } catch (e, s) {
+      print(s);
+    }
+
     TransactionViewController.instance.updateTransactionsView();
   }
 }

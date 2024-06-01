@@ -56,7 +56,8 @@ class ICICICreditCardTransactionsManager extends CreditCardTransactionsManager {
 
     int indexTime = indexAt + 1;
 
-    double amount = double.parse(docWords[indexTransactionAmount]);
+    double amount =
+        double.parse(docWords[indexTransactionAmount].replaceAll(',', ''));
     String transactionDateTimeString =
         "${docWords[year]}-${docWords[month]}-${docWords[date]} ${docWords[indexTime]}";
 

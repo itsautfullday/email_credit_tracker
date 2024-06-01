@@ -132,8 +132,10 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                 mode: DateTimeFieldPickerMode.dateAndTime,
                 initialDate: date,
                 autovalidateMode: AutovalidateMode.always,
-                validator: (e) =>
-                    (e?.day ?? 0) == 1 ? 'Please not the first day' : null,
+                // (e?.day ?? 0) == 1 ? 'Please not the first day' : null
+                validator: (DateTime? e) {
+                  return null;
+                },
                 onSaved: (newValue) => date = newValue,
               ),
               //TODO Add delete button!
@@ -143,13 +145,19 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                   text: 'Submit',
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      print("Validation passed");
                       _formKey.currentState!.save();
                       if (isCreateForm) {
                         controller.addTransaction(
                             amount!, label, account, note, date!);
                       } else {
-                        controller.updateTransaction(
-                            amount!, label, account, note, date!, transaction!);
+                        print("Validation updated");
+                        try {
+                          controller.updateTransaction(amount!, label, account,
+                              note, date, transaction!);
+                        } catch (e, s) {
+                          print(s);
+                        }
                       }
 
                       Navigator.pop(context);

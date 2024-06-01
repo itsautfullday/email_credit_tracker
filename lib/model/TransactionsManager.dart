@@ -33,14 +33,16 @@ class TransactionsManager {
       _dataloadCompleted = true;
       return;
     }
-    String transactionsJson = await FileUtil.readFile(_TRANSACTIONS_WRITE_PATH);
+    String transactionsJsonEncoded =
+        await FileUtil.readFile(_TRANSACTIONS_WRITE_PATH);
+    String transactionsJson = Uri.decodeFull(transactionsJsonEncoded);
+
     Map<String, dynamic> transactionsRaw = jsonDecode(transactionsJson);
     transactionsRaw.forEach(
         (key, value) => _allTransactions[key] = Transaction.fromJson(value));
 
     print("DATA LOADED : " + _allTransactions.length.toString());
     _dataloadCompleted = true;
-    
   }
 
   Future<void> saveTransactionData() async {
@@ -48,7 +50,7 @@ class TransactionsManager {
     //Implement this data
     print("Starting file write");
     await FileUtil.writeToFile(
-        _TRANSACTIONS_WRITE_PATH, jsonEncode(_allTransactions),
+        _TRANSACTIONS_WRITE_PATH, Uri.encodeFull(jsonEncode(_allTransactions)),
         forceCreate: true);
     print("File write complete" +
         FileUtil.fileExist(_TRANSACTIONS_WRITE_PATH).toString());
@@ -73,51 +75,5 @@ class TransactionsManager {
     return Constants.STATUS_OK;
   }
 
-  void debugAddTransactions() {
-    print("Calling debug add");
-    Transaction transaction1 = Transaction(100, "smokes", "cash", "",
-        (DateTime.now().subtract(Duration(days: 1))).millisecondsSinceEpoch);
-    Transaction transaction2 = Transaction(100, "smokes", "cash", "",
-        (DateTime.now().subtract(Duration(days: 1))).millisecondsSinceEpoch);
-    Transaction transaction3 = Transaction(100, "smokes", "cash", "",
-        (DateTime.now().subtract(Duration(days: 1))).millisecondsSinceEpoch);
-    Transaction transaction4 = Transaction(100, "smokes", "cash", "",
-        (DateTime.now().subtract(Duration(days: 1))).millisecondsSinceEpoch);
-    TransactionsManager._instance!.addTransactionToMasterList(transaction1);
-    TransactionsManager._instance!.addTransactionToMasterList(transaction2);
-    TransactionsManager._instance!.addTransactionToMasterList(transaction3);
-    TransactionsManager._instance!.addTransactionToMasterList(transaction4);
-    print("End debug add");
-  }
 
-  int updateTransactionInMasterList(
-    Transaction transactionOrig, {
-    int? amount,
-    String? label,
-    String? note,
-    String? account,
-    int? timestamp,
-  }) {
-    if (amount != null) {
-      transactionOrig.amount = amount;
-    }
-
-    if (label != null) {
-      transactionOrig.label = label;
-    }
-
-    if (note != null) {
-      transactionOrig.note = note;
-    }
-
-    if (account != null) {
-      transactionOrig.account = account;
-    }
-
-    if (timestamp != null) {
-      transactionOrig.timestamp = timestamp;
-    }
-
-    return Constants.STATUS_OK;
-  }
 }
