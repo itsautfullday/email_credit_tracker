@@ -64,3 +64,13 @@ Ideas I want documented from this experience:
 1. Overall Documentation of a codebas3
 2. For Flutter Apps what and how to create a firebase google auth project that allows for reading of email : Good resources for the same
 3. Usage od providers etc
+
+
+Okay so atleast some more changes I want to make : 
+1. Deadline : June 30th
+2. Account analysis, category analysis
+3. Category field
+4. Auto ingestion as a service
+5. Annotation flow - add categories
+6. An initilisation page
+7. Medium post for the application 
