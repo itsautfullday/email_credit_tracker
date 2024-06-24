@@ -70,7 +70,9 @@ Okay so atleast some more changes I want to make :
 1. Deadline : June 30th
 2. Account analysis, category analysis
 3. Category field
-4. Auto ingestion as a service
+4. Auto ingestion as a service -- not doable -- cannot read mails without sign in and cannot use sign in without foreground activity!
 5. Annotation flow - add categories
 6. An initilisation page
 7. Medium post for the application 
+
+Prioritise -- category field, front end betterment, account setup and category setup!
