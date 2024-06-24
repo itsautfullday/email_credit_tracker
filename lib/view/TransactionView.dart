@@ -76,7 +76,7 @@ class TransactionGridState extends State<TransactionGrid> {
       },
           Text(
             transaction!.label.toString(),
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context).textTheme.displaySmall,
           )),
       DataCell(onTap: () {
         TransactionViewController.instance
@@ -84,7 +84,7 @@ class TransactionGridState extends State<TransactionGrid> {
       },
           Text(
             transaction.amount.toString(),
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context).textTheme.displaySmall,
           )),
       DataCell(onTap: () {
         TransactionViewController.instance
@@ -92,7 +92,7 @@ class TransactionGridState extends State<TransactionGrid> {
       },
           Text(
             transaction.account.toString(),
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context).textTheme.displaySmall,
           )),
     ]);
   }

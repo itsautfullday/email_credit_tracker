@@ -133,12 +133,12 @@ class EmailTransactionAppState extends State<EmailTransactionApp>
             //           The title uses "titleLarge"
             //           and the middle text uses "bodyMedium".
             titleLarge: GoogleFonts.vt323(
-              fontSize: 30,
+              fontSize: 35,
             ),
             bodyMedium: GoogleFonts.vt323(
-              fontSize: 25,
+              fontSize: 30,
             ),
-            displaySmall: GoogleFonts.vt323(fontSize: 10),
+            displaySmall: GoogleFonts.vt323(fontSize: 20),
           ),
         ),
         home: ChangeNotifierProvider(
