@@ -12,7 +12,9 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
       json['account'] as String?,
       json['note'] as String?,
       json['timestamp'] as int?,
-    )..transactionId = json['transactionId'] as String?;
+    )
+      ..category = json['category'] as int?
+      ..transactionId = json['transactionId'] as String?;
 
 Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
     <String, dynamic>{
@@ -20,6 +22,7 @@ Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
       'label': instance.label,
       'note': instance.note,
       'account': instance.account,
+      'category': instance.category,
       'timestamp': instance.timestamp,
       'transactionId': instance.transactionId,
     };

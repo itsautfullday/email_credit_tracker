@@ -12,6 +12,7 @@ class Transaction {
   String? label;
   String? note;
   String? account;
+  int? category;
   int? timestamp;
   String? transactionId;
 
@@ -20,8 +21,8 @@ class Transaction {
     return "${label} ${amount} ${DateTime.fromMillisecondsSinceEpoch(timestamp!).toString()}";
   }
 
-  factory Transaction.fromJson(Map<String, dynamic> json) =>
-      _$TransactionFromJson(json);
+    factory Transaction.fromJson(Map<String, dynamic> json) =>
+        _$TransactionFromJson(json);
 
-  Map<String, dynamic> toJson() => _$TransactionToJson(this);
+    Map<String, dynamic> toJson() => _$TransactionToJson(this);
 }
