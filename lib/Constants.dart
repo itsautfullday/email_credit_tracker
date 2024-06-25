@@ -10,4 +10,6 @@ class Constants {
   static const String LAST_READ_ID = "lastReadID";
   static const String INTRODUCTORY_TEXT =
       "An application meant for a clean view of your debits in a systematic manner.";
+
+  static const String UNDEFINED_CATEGORY = "undefined_category";
 }

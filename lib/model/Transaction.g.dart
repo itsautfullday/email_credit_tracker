@@ -13,7 +13,7 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
       json['note'] as String?,
       json['timestamp'] as int?,
     )
-      ..category = json['category'] as int?
+      ..category = json['category'] as String? ?? 'undefined_category'
       ..transactionId = json['transactionId'] as String?;
 
 Map<String, dynamic> _$TransactionToJson(Transaction instance) =>

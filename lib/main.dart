@@ -4,7 +4,7 @@ import 'package:email_credit_tracker/model/GmailManager.dart';
 import 'package:email_credit_tracker/model/TransactionsManager.dart';
 import 'package:email_credit_tracker/view/CommonWidgets/ViewScaffold.dart';
 import 'package:email_credit_tracker/view/IntroductionView.dart';
-import 'package:email_credit_tracker/view/TransactionView.dart';
+import 'package:email_credit_tracker/view/TransactionView/TransactionView.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

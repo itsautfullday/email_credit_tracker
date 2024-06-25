@@ -1,9 +1,12 @@
 import 'package:email_credit_tracker/controller/TransactionViewController.dart';
+import 'package:email_credit_tracker/model/ExpenseCategory.dart';
+import 'package:email_credit_tracker/model/ExpenseCategoryManager.dart';
 import 'package:email_credit_tracker/view/CommonWidgets/ViewScaffold.dart';
+import 'package:email_credit_tracker/view/TransactionView/TransactionRow.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../model/Transaction.dart';
-import 'CommonWidgets/DottedButton.dart';
+import '../../model/Transaction.dart';
+import '../CommonWidgets/DottedButton.dart';
 
 //Stuff I want to accomplish -
 // 3. Add refresh button asset and ad the google email read Flow
@@ -113,30 +116,48 @@ class TransactionGridState extends State<TransactionGrid> {
                   style: Theme.of(context).textTheme.bodyMedium);
             }
 
-            return TwoDimensionalScrollWidget(
-              child: DataTable(
-                  columns: [
-                    DataColumn(
-                        label: Text(
-                      'Label',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    )),
-                    DataColumn(
-                        label: Text(
-                      'Amount',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    )),
-                    DataColumn(
-                        label: Text(
-                      'Account',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ))
-                  ],
-                  rows: fetchTransactionsDataRow(
-                      value.updatedTransactions, context)),
-            );
+            return ExpensesList(value.updatedTransactions);
+            // return TwoDimensionalScrollWidget(
+            //   child: DataTable(
+            //       columns: [
+            //         DataColumn(
+            //             label: Text(
+            //           'Label',
+            //           style: Theme.of(context).textTheme.bodyMedium,
+            //         )),
+            //         DataColumn(
+            //             label: Text(
+            //           'Amount',
+            //           style: Theme.of(context).textTheme.bodyMedium,
+            //         )),
+            //         DataColumn(
+            //             label: Text(
+            //           'Account',
+            //           style: Theme.of(context).textTheme.bodyMedium,
+            //         ))
+            //       ],
+            //       rows: fetchTransactionsDataRow(
+            //           value.updatedTransactions, context)),
+            // );
           },
         ));
+  }
+}
+
+class ExpensesList extends StatelessWidget {
+  final List<Transaction> transactions;
+  ExpensesList(this.transactions);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+        itemCount: transactions.length,
+        itemBuilder: (context, index) {
+          return TransactionRow(transactions[index]);
+        },
+        separatorBuilder: (context, index) {
+          return Divider();
+        });
   }
 }
 

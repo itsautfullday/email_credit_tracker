@@ -1,3 +1,4 @@
+import 'package:email_credit_tracker/Constants.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'Transaction.g.dart';
 
@@ -12,7 +13,10 @@ class Transaction {
   String? label;
   String? note;
   String? account;
-  int? category;
+
+  @JsonKey(defaultValue: Constants.UNDEFINED_CATEGORY)
+  String? category = Constants.UNDEFINED_CATEGORY;
+  
   int? timestamp;
   String? transactionId;
 
@@ -21,8 +25,8 @@ class Transaction {
     return "${label} ${amount} ${DateTime.fromMillisecondsSinceEpoch(timestamp!).toString()}";
   }
 
-    factory Transaction.fromJson(Map<String, dynamic> json) =>
-        _$TransactionFromJson(json);
+  factory Transaction.fromJson(Map<String, dynamic> json) =>
+      _$TransactionFromJson(json);
 
-    Map<String, dynamic> toJson() => _$TransactionToJson(this);
+  Map<String, dynamic> toJson() => _$TransactionToJson(this);
 }
