@@ -6,7 +6,6 @@ import 'ExpenseCategory.dart';
 
 class ExpenseCategoryManager {
   ExpenseCategoryManager._constructor();
-
   static ExpenseCategoryManager? _instance;
   static ExpenseCategoryManager get instance {
     _instance ??= ExpenseCategoryManager._constructor();
@@ -15,7 +14,7 @@ class ExpenseCategoryManager {
 
   Map<String, ExpenseCategory> categoryMap = Map();
   // loads a category json from assets into category map
-  void loadCategoryInfo() async {
+    Future<void> loadCategoryInfo() async {
     String catJSONString =
         await rootBundle.loadString("assets/json/categories.json");
     Map<String, dynamic> catJSON = jsonDecode(catJSONString);

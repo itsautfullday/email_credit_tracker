@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 class ViewScaffold extends StatelessWidget {
   final Widget body;
   Widget? floatingActionButton;
+  Widget? bottomNavigationBar;
 
-  ViewScaffold({super.key, required this.body, this.floatingActionButton});
+  ViewScaffold(
+      {super.key,
+      required this.body,
+      this.floatingActionButton,
+      this.bottomNavigationBar});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,8 @@ class ViewScaffold extends StatelessWidget {
         title: Text("Simple Transactions Manager",
             style: Theme.of(context).textTheme.bodyMedium),
       ),
-      body: this.body,
+      body: body,
+      bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

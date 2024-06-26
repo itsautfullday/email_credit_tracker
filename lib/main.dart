@@ -1,5 +1,6 @@
 import 'package:email_credit_tracker/controller/TransactionViewController.dart';
 import 'package:email_credit_tracker/model/AutoIngestionManager.dart';
+import 'package:email_credit_tracker/model/ExpenseCategoryManager.dart';
 import 'package:email_credit_tracker/model/GmailManager.dart';
 import 'package:email_credit_tracker/model/TransactionsManager.dart';
 import 'package:email_credit_tracker/view/CommonWidgets/ViewScaffold.dart';
@@ -39,6 +40,7 @@ class AppDataManager {
   }
 
   void load() async {
+    await ExpenseCategoryManager.instance.loadCategoryInfo();
     await GmailManager.instance.load();
     await TransactionsManager.instance.loadTransactionsData();
     TransactionViewController.instance.updateTransactionsView();
