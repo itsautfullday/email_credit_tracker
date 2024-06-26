@@ -8,8 +8,6 @@ import 'package:provider/provider.dart';
 import '../../model/Transaction.dart';
 import '../CommonWidgets/DottedButton.dart';
 
-//Stuff I want to accomplish -
-// 3. Add refresh button asset and ad the google email read Flow
 
 class TransactionView extends StatelessWidget {
   TransactionView({super.key});
@@ -94,7 +92,7 @@ class ExpensesList extends StatelessWidget {
           return TransactionRow(transactions[index]);
         },
         separatorBuilder: (context, index) {
-          return Divider();
+          return const Divider();
         });
   }
 }

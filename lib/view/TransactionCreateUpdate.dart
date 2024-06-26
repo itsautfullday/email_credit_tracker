@@ -93,7 +93,6 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter some text';
                   }
-                  https: //docs.flutter.dev/cookbook/design/themes
                   return null;
                 },
               ),
@@ -122,6 +121,7 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                   return null;
                 },
               ),
+              //TODO : This breaks, allow for current time addition if not specified!
               DateTimeFormField(
                 decoration: InputDecoration(
                   hintStyle: Theme.of(context).textTheme.titleLarge,
@@ -137,7 +137,11 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                 },
                 onSaved: (newValue) => date = newValue,
               ),
+              //TODO Use drop down form field for usage! https://www.dhiwise.com/post/user-selection-guide-to-flutter-dropdownbuttonformfield
+              //
+              
               //TODO Add delete button!
+
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: DottedButton(
