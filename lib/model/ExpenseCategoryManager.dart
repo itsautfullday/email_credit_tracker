@@ -14,7 +14,7 @@ class ExpenseCategoryManager {
 
   Map<String, ExpenseCategory> categoryMap = Map();
   // loads a category json from assets into category map
-    Future<void> loadCategoryInfo() async {
+  Future<void> loadCategoryInfo() async {
     String catJSONString =
         await rootBundle.loadString("assets/json/categories.json");
     Map<String, dynamic> catJSON = jsonDecode(catJSONString);
@@ -28,5 +28,9 @@ class ExpenseCategoryManager {
       return categoryMap[categoryId]!;
     }
     throw Exception('Unknown category trying to be fetched! $categoryId');
+  }
+
+  List<ExpenseCategory> getAllExpenseCategory() {
+    return categoryMap.values.toList();
   }
 }

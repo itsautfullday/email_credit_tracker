@@ -1,8 +1,15 @@
+import 'package:email_credit_tracker/Constants.dart';
+import 'package:email_credit_tracker/model/ExpenseCategory.dart';
+import 'package:email_credit_tracker/model/ExpenseCategoryManager.dart';
 import 'package:email_credit_tracker/model/Transaction.dart';
 import 'package:email_credit_tracker/model/TransactionsManager.dart';
 import 'package:email_credit_tracker/view/CommonWidgets/DottedButton.dart';
 import 'package:date_field/date_field.dart';
+import 'package:email_credit_tracker/view/CommonWidgets/ViewScaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:googleapis/pagespeedonline/v5.dart';
+import 'package:intl/intl.dart';
 
 import '../controller/TransactionCreateUpdateController.dart';
 
@@ -13,7 +20,7 @@ class CreateUpdateTransaction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ViewScaffold(
         body: Center(child: CreateUpdateForm(transaction: transaction)));
   }
 }
@@ -33,6 +40,8 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
   bool isCreateForm = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Transaction? transaction;
+  ExpenseCategory initialCategory = ExpenseCategoryManager.instance
+        .getCategory(Constants.UNDEFINED_CATEGORY);
 
   _CreateUpdateFormState({this.transaction}) {
     this.isCreateForm = (transaction == null);
@@ -45,6 +54,9 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
     String label = "";
     String note = "";
     DateTime? date = DateTime.now();
+    
+    List<ExpenseCategory> categories =
+        ExpenseCategoryManager.instance.getAllExpenseCategory();
 
     if (!isCreateForm) {
       amount = transaction!.amount!;
@@ -127,9 +139,9 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                   hintStyle: Theme.of(context).textTheme.titleLarge,
                   border: UnderlineInputBorder(),
                   suffixIcon: Icon(Icons.event_note),
-                  hintText: 'Transaction time',
                 ),
                 mode: DateTimeFieldPickerMode.dateAndTime,
+                initialValue: date,
                 initialDate: date,
                 autovalidateMode: AutovalidateMode.always,
                 validator: (DateTime? e) {
@@ -137,15 +149,39 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                 },
                 onSaved: (newValue) => date = newValue,
               ),
+              DropdownButtonFormField<ExpenseCategory>(
+                value: initialCategory,
+                decoration: const InputDecoration(
+                  labelText: 'Category',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (ExpenseCategory? newValue) {
+                  setState(() {
+                    print("Calling set state " + newValue!.categoryId!);
+                    initialCategory = newValue!;
+                  });
+                },
+                items: categories.map<DropdownMenuItem<ExpenseCategory>>(
+                    (ExpenseCategory item) {
+                  return DropdownMenuItem<ExpenseCategory>(
+                    value: item,
+                    child: Container(
+                        width: 30,
+                        height: 30,
+                        alignment: Alignment.center,
+                        child: Image.asset(item!.assetPath!)),
+                  );
+                }).toList(),
+              ),
               //TODO Use drop down form field for usage! https://www.dhiwise.com/post/user-selection-guide-to-flutter-dropdownbuttonformfield
               //
-              
+
               //TODO Add delete button!
 
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: DottedButton(
-                  text: 'Submit',
+                  text: 'Save',
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       print("Validation passed");
@@ -157,17 +193,16 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                         print("Validation updated");
                         try {
                           controller.updateTransaction(amount!, label, account,
-                              note, date, transaction!);
+                              note, date, initialCategory, transaction!);
                         } catch (e, s) {
                           print(s);
                         }
                       }
-
                       Navigator.pop(context);
                     }
                   },
                 ),
-              ),
+              )
             ],
           ),
         ),

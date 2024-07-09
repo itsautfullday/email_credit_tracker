@@ -1,4 +1,5 @@
 import 'package:email_credit_tracker/controller/TransactionViewController.dart';
+import 'package:email_credit_tracker/model/ExpenseCategory.dart';
 
 import '../model/Transaction.dart';
 import '../model/TransactionsManager.dart';
@@ -15,8 +16,14 @@ class TransactionCreateUpdateController {
     }
   }
 
-  void updateTransaction(int? amount, String? label, String? account,
-      String? note, DateTime? date, Transaction transaction) {
+  void updateTransaction(
+      int? amount,
+      String? label,
+      String? account,
+      String? note,
+      DateTime? date,
+      ExpenseCategory? category,
+      Transaction transaction) {
     try {
       if (amount != null) {
         transaction!.amount = amount;
@@ -37,6 +44,12 @@ class TransactionCreateUpdateController {
       if (date != null) {
         transaction!.timestamp = date!.millisecondsSinceEpoch;
       }
+
+      if (category != null) {
+        transaction.category = category.categoryId;
+      }
+
+      print("Post update transaction cat ${transaction.category}");
     } catch (e, s) {
       print(s);
     }
