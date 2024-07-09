@@ -2,14 +2,10 @@ import 'package:email_credit_tracker/Constants.dart';
 import 'package:email_credit_tracker/model/ExpenseCategory.dart';
 import 'package:email_credit_tracker/model/ExpenseCategoryManager.dart';
 import 'package:email_credit_tracker/model/Transaction.dart';
-import 'package:email_credit_tracker/model/TransactionsManager.dart';
 import 'package:email_credit_tracker/view/CommonWidgets/DottedButton.dart';
 import 'package:date_field/date_field.dart';
 import 'package:email_credit_tracker/view/CommonWidgets/ViewScaffold.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:googleapis/pagespeedonline/v5.dart';
-import 'package:intl/intl.dart';
 
 import '../controller/TransactionCreateUpdateController.dart';
 
@@ -25,6 +21,9 @@ class CreateUpdateTransaction extends StatelessWidget {
   }
 }
 
+//1. TODO : REFACTOR THIS FUCKING FILE
+//2. Add delete button
+//3. Fix how the drop down is coming out? Looks freaking weird
 class CreateUpdateForm extends StatefulWidget {
   CreateUpdateForm({super.key, this.transaction});
   final Transaction? transaction;
@@ -40,8 +39,8 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
   bool isCreateForm = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Transaction? transaction;
-  ExpenseCategory initialCategory = ExpenseCategoryManager.instance
-        .getCategory(Constants.UNDEFINED_CATEGORY);
+  ExpenseCategory initialCategory =
+      ExpenseCategoryManager.instance.getCategory(Constants.UNDEFINED_CATEGORY);
 
   _CreateUpdateFormState({this.transaction}) {
     this.isCreateForm = (transaction == null);
@@ -54,7 +53,8 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
     String label = "";
     String note = "";
     DateTime? date = DateTime.now();
-    
+    final Size size = MediaQuery.of(context).size;
+
     List<ExpenseCategory> categories =
         ExpenseCategoryManager.instance.getAllExpenseCategory();
 
@@ -69,8 +69,7 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height:
-            500, // TODO UTKARSH Media query thia and do based off of percentage sitze of the screen
+        height: size.height * 0.8,
         padding: EdgeInsets.all(20),
         child: Form(
           key: _formKey,
@@ -165,6 +164,7 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                     (ExpenseCategory item) {
                   return DropdownMenuItem<ExpenseCategory>(
                     value: item,
+                    alignment: Alignment.center,
                     child: Container(
                         width: 30,
                         height: 30,
@@ -173,8 +173,6 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                   );
                 }).toList(),
               ),
-              //TODO Use drop down form field for usage! https://www.dhiwise.com/post/user-selection-guide-to-flutter-dropdownbuttonformfield
-              //
 
               //TODO Add delete button!
 
