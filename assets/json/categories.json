@@ -1,38 +1,49 @@
 {
     "food":{
         "assetPath":"assets/images/food-restaurant-icon.jpg",
-        "categoryId":"food"
+        "categoryId":"food",
+        "categoryName":"Food"
+
     },
     "social":{
         "assetPath":"assets/images/social.jpg",
-        "categoryId":"social"
+        "categoryId":"social",
+        "categoryName":"Social"
     },
     "household":{
         "assetPath":"assets/images/room-icon.jpg",
-        "categoryId":"household"
+        "categoryId":"household",
+        "categoryName":"Household"
     },
     "beauty":{
         "assetPath":"assets/images/beauty.jpg",
-        "categoryId":"beauty"
+        "categoryId":"beauty",
+        "categoryName":"Beauty"
     },
     "transport":{
         "assetPath":"assets/images/taxi-icon.jpg",
-        "categoryId":"transport"
+        "categoryId":"transport",
+        "categoryName":"Transport"
     },
     "apparel":{
         "assetPath":"assets/images/apparel.jpg",
-        "categoryId":"apparel"
+        "categoryId":"apparel",
+        "categoryName":"Apparel"
     },
     "health":{
         "assetPath":"assets/images/health.jpg",
-        "categoryId":"health"
+        "categoryId":"health",
+        "categoryName":"Health"
     },
     "education":{
         "assetPath":"assets/images/education.jpg",
-        "categoryId":"education"
+        "categoryId":"education",
+        "categoryName":"Education"
     },
     "undefined_category":{
         "assetPath":"assets/images/undefined_category.jpg",
-        "categoryId":"undefined_category"
+        "categoryId":"undefined_category",
+        "categoryName":""
+        
     }
 }

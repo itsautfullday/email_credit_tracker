@@ -7,6 +7,7 @@ class ExpenseCategory {
 
   String? assetPath;
   String? categoryId;
+  String? categoryName;
 
   factory ExpenseCategory.fromJson(Map<String, dynamic> json) =>
       _$ExpenseCategoryFromJson(json);

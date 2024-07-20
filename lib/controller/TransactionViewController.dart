@@ -13,8 +13,9 @@ class TransactionViewController extends ChangeNotifier {
     return _instance!;
   }
 
-  void updateTransactionsView() {
+  void updateTransactionsView() async {
     notifyListeners();
+    await TransactionsManager.instance.saveTransactionData();
   }
 
   bool shouldShowLoadingTransactionsMessage() {

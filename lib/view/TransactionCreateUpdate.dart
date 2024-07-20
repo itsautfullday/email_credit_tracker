@@ -132,7 +132,7 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                   return null;
                 },
               ),
-              //TODO : This breaks, allow for current time addition if not specified!
+
               DateTimeFormField(
                 decoration: InputDecoration(
                   hintStyle: Theme.of(context).textTheme.titleLarge,
@@ -148,30 +148,33 @@ class _CreateUpdateFormState extends State<CreateUpdateForm> {
                 },
                 onSaved: (newValue) => date = newValue,
               ),
-              DropdownButtonFormField<ExpenseCategory>(
-                value: initialCategory,
-                decoration: const InputDecoration(
-                  labelText: 'Category',
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (ExpenseCategory? newValue) {
-                  setState(() {
-                    print("Calling set state " + newValue!.categoryId!);
-                    initialCategory = newValue!;
-                  });
-                },
-                items: categories.map<DropdownMenuItem<ExpenseCategory>>(
-                    (ExpenseCategory item) {
-                  return DropdownMenuItem<ExpenseCategory>(
-                    value: item,
-                    alignment: Alignment.center,
-                    child: Container(
-                        width: 30,
-                        height: 30,
+
+              SizedBox(
+                width: 60,
+                child: DropdownButtonFormField<ExpenseCategory>(
+                  value: initialCategory,
+                  decoration: const InputDecoration(
+                    labelText: 'Category',
+                  ),
+                  onChanged: (ExpenseCategory? newValue) {
+                    setState(() {
+                      print("Calling set state " + newValue!.categoryId!);
+                      initialCategory = newValue!;
+                    });
+                  },
+                  items: categories.map<DropdownMenuItem<ExpenseCategory>>(
+                      (ExpenseCategory item) {
+                    return DropdownMenuItem<ExpenseCategory>(
+                        value: item,
                         alignment: Alignment.center,
-                        child: Image.asset(item!.assetPath!)),
-                  );
-                }).toList(),
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          alignment: Alignment.center,
+                          child: Image.asset(item!.assetPath!),
+                        ));
+                  }).toList(),
+                ),
               ),
 
               //TODO Add delete button!

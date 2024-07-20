@@ -9,10 +9,12 @@ part of 'ExpenseCategory.dart';
 ExpenseCategory _$ExpenseCategoryFromJson(Map<String, dynamic> json) =>
     ExpenseCategory()
       ..assetPath = json['assetPath'] as String?
-      ..categoryId = json['categoryId'] as String?;
+      ..categoryId = json['categoryId'] as String?
+      ..categoryName = json['categoryName'] as String?;
 
 Map<String, dynamic> _$ExpenseCategoryToJson(ExpenseCategory instance) =>
     <String, dynamic>{
       'assetPath': instance.assetPath,
       'categoryId': instance.categoryId,
+      'categoryName': instance.categoryName,
     };

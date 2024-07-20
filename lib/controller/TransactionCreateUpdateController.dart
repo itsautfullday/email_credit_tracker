@@ -55,5 +55,6 @@ class TransactionCreateUpdateController {
     }
 
     TransactionViewController.instance.updateTransactionsView();
+    
   }
 }
