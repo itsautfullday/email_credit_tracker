@@ -52,6 +52,7 @@ dependencies:
   shared_preferences: ^2.2.2
   dots_indicator: ^3.0.0
   fluttertoast: ^8.2.5
+  syncfusion_flutter_datepicker: 23.2.4
 
 dev_dependencies:
   flutter_test:

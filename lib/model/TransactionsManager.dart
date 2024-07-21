@@ -56,10 +56,15 @@ class TransactionsManager {
         FileUtil.fileExist(_TRANSACTIONS_WRITE_PATH).toString());
   }
 
-  List<Transaction> getTransactionFiltered() {
-    //Would be great if we can add some filtering mechanism : Would allow for better filtering
-    //TODO : Implement aftet the transactions view is ready
-    return _allTransactions.values.toList();
+  List<Transaction> getTransactionFiltered(
+      bool Function(Transaction t) filter) {
+    List<Transaction> result = [];
+    _allTransactions.values.forEach((element) {
+      if (filter(element)) {
+        result.add(element);
+      }
+    });
+    return result;
   }
 
   List<Transaction> getAllTransactions() {
@@ -74,6 +79,4 @@ class TransactionsManager {
     _allTransactions[transaction.transactionId!] = transaction;
     return Constants.STATUS_OK;
   }
-
-
 }

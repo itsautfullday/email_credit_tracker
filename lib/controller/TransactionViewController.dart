@@ -1,3 +1,4 @@
+import 'package:email_credit_tracker/view/AnalysisView.dart';
 import 'package:flutter/material.dart';
 
 import '../model/AutoIngestionManager.dart';
@@ -41,6 +42,14 @@ class TransactionViewController extends ChangeNotifier {
       context,
       MaterialPageRoute(
           builder: (context) => CreateUpdateTransaction(transaction: null)),
+    );
+  }
+
+  void openAnalysisView(BuildContext context){
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => AnalysisView()),
     );
   }
 

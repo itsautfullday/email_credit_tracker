@@ -46,7 +46,15 @@ class ActionButtonRow extends StatelessWidget {
               print("Calling on pressed");
               TransactionViewController.instance.refreshTransactionsFromEmail();
             },
-          )
+          ),
+          DottedButton(
+            text: "|%|",
+            onPressed: () {
+              print("Calling on pressed");
+              TransactionViewController.instance.openAnalysisView(context);
+            },
+          ),
+          
         ],
       ),
     );
