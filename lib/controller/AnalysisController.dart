@@ -1,7 +1,6 @@
 import 'package:email_credit_tracker/model/Transaction.dart';
 import 'package:email_credit_tracker/model/TransactionsManager.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:googleapis/photoslibrary/v1.dart';
 
 class AnalysisController {
   AnalysisDateRangeChangeNotifier dateRangeInstance =
@@ -18,6 +17,13 @@ class AnalysisController {
   DateTime end = AnalysisDateRangeChangeNotifier.instance.end;
 
   List<Transaction> getTransactionsWithinRange() {
+    start = AnalysisDateRangeChangeNotifier.instance.start;
+    end = AnalysisDateRangeChangeNotifier.instance.end;
+    print("Calling getTransactionsWithinRange " +
+        start.toString() +
+        " " +
+        end.toString());
+
     bool dateFilter(Transaction transaction) {
       DateTime timeStamp =
           DateTime.fromMillisecondsSinceEpoch(transaction.timestamp!);
@@ -136,11 +142,13 @@ class AnalysisDateRangeChangeNotifier extends ChangeNotifier {
 
   set start(DateTime val) {
     _start = val;
+    print("start changing");
     notifyListeners();
   }
 
   set end(DateTime val) {
     _end = val;
+    print("end changing");
     notifyListeners();
   }
 }

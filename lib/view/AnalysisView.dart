@@ -65,7 +65,14 @@ class DateTextState extends State<DateText> {
             lastDate: DateTime(2100));
         if (newDate != null) {
           this.date = newDate;
-          setState(() {});
+
+          setState(() {
+            if (annotation == "From") {
+              AnalysisDateRangeChangeNotifier.instance.start = newDate;
+            } else {
+              AnalysisDateRangeChangeNotifier.instance.end = newDate;
+            }
+          });
         }
       },
       child: SizedBox(
