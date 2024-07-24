@@ -1,9 +1,11 @@
 import 'package:email_credit_tracker/model/Transaction.dart';
 import 'package:email_credit_tracker/model/TransactionsManager.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:googleapis/photoslibrary/v1.dart';
 
 class AnalysisController {
-  AnalysisDateRange dateRangeInstance = AnalysisDateRange.instance;
+  AnalysisDateRangeChangeNotifier dateRangeInstance =
+      AnalysisDateRangeChangeNotifier.instance;
   AnalysisController._();
 
   static AnalysisController? _instance;
@@ -12,15 +14,8 @@ class AnalysisController {
     return _instance!;
   }
 
-  DateTime start = DateTime.now().subtract(Duration(days: 30));
-  DateTime end = DateTime.now();
-
-  void editDateRange(DateTime start, {DateTime? end}) {
-    end ??= DateTime.now();
-
-    this.start = start;
-    this.end = end;
-  }
+  DateTime start = AnalysisDateRangeChangeNotifier.instance.start;
+  DateTime end = AnalysisDateRangeChangeNotifier.instance.end;
 
   List<Transaction> getTransactionsWithinRange() {
     bool dateFilter(Transaction transaction) {
@@ -119,12 +114,33 @@ class CategoryAnalysis extends AnalysisTableFiller {
 //create a singleton of this class
 //this class's instance will be the instance that the consumer will listen to
 //this class's instance will get its date change notification from the controller
-class AnalysisDateRange extends ChangeNotifier {
-  AnalysisDateRange._();
-
-  static AnalysisDateRange? _instance;
-  static AnalysisDateRange get instance {
-    _instance ??= AnalysisDateRange._();
+class AnalysisDateRangeChangeNotifier extends ChangeNotifier {
+  static AnalysisDateRangeChangeNotifier? _instance;
+  static AnalysisDateRangeChangeNotifier get instance {
+    _instance ??= AnalysisDateRangeChangeNotifier._();
     return _instance!;
+  }
+
+  AnalysisDateRangeChangeNotifier._();
+
+  DateTime _start = DateTime.now().subtract(Duration(days: 30));
+  DateTime _end = DateTime.now();
+
+  DateTime get start {
+    return _start;
+  }
+
+  DateTime get end {
+    return _end;
+  }
+
+  set start(DateTime val) {
+    _start = val;
+    notifyListeners();
+  }
+
+  set end(DateTime val) {
+    _end = val;
+    notifyListeners();
   }
 }

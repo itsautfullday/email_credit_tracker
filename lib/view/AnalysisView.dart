@@ -3,12 +3,14 @@
 // 2 tables :    Account table and category table, percentage splits and top transactions
 // see if we can fetch more than the mails from last 100!
 
+import 'dart:convert';
+
 import 'package:email_credit_tracker/controller/AnalysisController.dart';
 import 'package:email_credit_tracker/controller/IntroductionController.dart';
 import 'package:email_credit_tracker/view/CommonWidgets/ViewScaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:provider/provider.dart';
 
 class AnalysisView extends StatelessWidget {
   IntroductionController controller = new IntroductionController();
@@ -16,70 +18,107 @@ class AnalysisView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewScaffold(
-        body: Column(
-      children: [AnanlysisDateRangePicker()],
-    ));
+        body: Column(children: [
+      AnalysisDateRange(),
+      ChangeNotifierProvider(
+          create: (context) => AnalysisDateRangeChangeNotifier.instance,
+          child: AnalysisTablesBlock())
+    ]));
   }
 }
 
-class AnanlysisDateRangePicker extends StatefulWidget {
-  AnalysisDateRangePickerState createState() => AnalysisDateRangePickerState();
-}
+class AnalysisDateRange extends StatelessWidget {
+  DateTime endDate = AnalysisController.instance.start;
+  DateTime startDate = AnalysisController.instance.end;
 
-class AnalysisDateRangePickerState extends State<AnanlysisDateRangePicker> {
-  String _selectedDate = '';
-  String _dateCount = '';
-  String _range = '';
-  String _rangeCount = '';
-
-  /// The method for [DateRangePickerSelectionChanged] callback, which will be
-  /// called whenever a selection changed on the date picker widget.
-  void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
-    /// The argument value will return the changed date as [DateTime] when the
-    /// widget [SfDateRangeSelectionMode] set as single.
-    ///
-    /// The argument value will return the changed dates as [List<DateTime>]
-    /// when the widget [SfDateRangeSelectionMode] set as multiple.
-    ///
-    /// The argument value will return the changed range as [PickerDateRange]
-    /// when the widget [SfDateRangeSelectionMode] set as range.
-    ///
-    /// The argument value will return the changed ranges as
-    /// [List<PickerDateRange] when the widget [SfDateRangeSelectionMode] set as
-    /// multi range.
-    setState(() {
-      if (args.value is PickerDateRange) {
-        _range = '${DateFormat('dd/MM/yyyy').format(args.value.startDate)} -'
-            // ignore: lines_longer_than_80_chars
-            ' ${DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.startDate)}';
-      } else if (args.value is DateTime) {
-        _selectedDate = args.value.toString();
-        print("Checking _selectedDate " + _selectedDate);
-      } else if (args.value is List<DateTime>) {
-        _dateCount = args.value.length.toString();
-        print("Checking _dateCount " + _dateCount);
-      } else {
-        _rangeCount = args.value.length.toString();
-        print("Checking _rangeCount " + _rangeCount);
-      }
-    });
-  }
-
+  @override
   Widget build(BuildContext context) {
-    return SfDateRangePicker(
-        onSelectionChanged: _onSelectionChanged,
-        selectionMode: DateRangePickerSelectionMode.range,
-        initialSelectedRange: PickerDateRange(AnalysisController.instance.start,
-            AnalysisController.instance.end));
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [DateText(startDate, "From"), DateText(endDate, "To")],
+    );
   }
 }
 
+class DateText extends StatefulWidget {
+  DateTime date;
+  String annotation;
+  DateText(this.date, this.annotation);
+
+  @override
+  DateTextState createState() => DateTextState(date, annotation);
+}
+
+class DateTextState extends State<DateText> {
+  DateTime date;
+  String annotation;
+  DateTextState(this.date, this.annotation);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        DateTime? newDate = await showDatePicker(
+            context: context,
+            initialDate: date,
+            firstDate: DateTime(1900),
+            lastDate: DateTime(2100));
+        if (newDate != null) {
+          this.date = newDate;
+          setState(() {});
+        }
+      },
+      child: SizedBox(
+        child: Column(
+          children: [
+            Text(this.annotation),
+            Text(DateFormat('dd/MM/yy').format(date))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AnalysisTablesBlock extends StatefulWidget {
+  AnalysisTablesBlockState createState() => AnalysisTablesBlockState();
+}
+
+class AnalysisTablesBlockState extends State<AnalysisTablesBlock> {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AnalysisDateRangeChangeNotifier>(
+      builder: (context, value, child) {
+        return Column(
+          children: [
+            AnalysisTable(AccountAnalysisTableFiller()),
+            AnalysisTable(CategoryAnalysis())
+          ],
+        );
+      },
+    );
+  }
+}
+
+class AnalysisTable extends StatelessWidget {
+  AnalysisTableFiller tableData;
+  AnalysisTable(this.tableData);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(tableData.getAnalysisTitle()),
+        Text(tableData.getTotalSpend().toString()),
+        Text(jsonEncode(tableData.getUniqueKeysToTotals()))
+      ],
+    );
+  }
+}
 
 //Rough ideas for Analysis view:
-// Have a from date, to date and a range picker
+
 // First thing should be a total spend
 // Followed by 2 tables each with a header and 3 colums : Max transaction, Total spent, % of total spent
 // 1 for Categories, the other for accounts
 // Can create some parent child classes for both of these analysis tables and add them in a for loop? - yea
-
-
