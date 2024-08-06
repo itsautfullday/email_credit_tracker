@@ -1,10 +1,9 @@
+import 'package:email_credit_tracker/model/ExpenseCategoryManager.dart';
 import 'package:email_credit_tracker/model/Transaction.dart';
 import 'package:email_credit_tracker/model/TransactionsManager.dart';
 import 'package:flutter/cupertino.dart';
 
 class AnalysisController {
-  AnalysisDateRangeChangeNotifier dateRangeInstance =
-      AnalysisDateRangeChangeNotifier.instance;
   AnalysisController._();
 
   static AnalysisController? _instance;
@@ -13,21 +12,39 @@ class AnalysisController {
     return _instance!;
   }
 
-  DateTime start = AnalysisDateRangeChangeNotifier.instance.start;
-  DateTime end = AnalysisDateRangeChangeNotifier.instance.end;
+  AnalysisDateRangeChangeNotifier? current;
+
+  DateTime _start = DateTime.now().subtract(Duration(days: 30));
+  DateTime _end = DateTime.now();
+
+  set start(DateTime val) {
+    _start = val;
+    current!.wrappedNotify();
+  }
+
+  DateTime get start {
+    return _start;
+  }
+
+  set end(DateTime val) {
+    _end = val;
+    current!.wrappedNotify();
+  }
+
+  DateTime get end {
+    return _end;
+  }
 
   List<Transaction> getTransactionsWithinRange() {
-    start = AnalysisDateRangeChangeNotifier.instance.start;
-    end = AnalysisDateRangeChangeNotifier.instance.end;
     print("Calling getTransactionsWithinRange " +
-        start.toString() +
+        _start.toString() +
         " " +
-        end.toString());
+        _end.toString());
 
     bool dateFilter(Transaction transaction) {
       DateTime timeStamp =
           DateTime.fromMillisecondsSinceEpoch(transaction.timestamp!);
-      return (timeStamp.isBefore(end!) && timeStamp.isAfter(start));
+      return (timeStamp.isBefore(_end!) && timeStamp.isAfter(_start));
     }
 
     List<Transaction> result =
@@ -38,6 +55,7 @@ class AnalysisController {
 
 abstract class AnalysisTableFiller {
   String getAnalysisTitle();
+  String getAnalysisKeys();
   Map<String, List<Transaction>> getUniqueKeysToTransactionMap();
 
   int getTotalSpend() {
@@ -94,6 +112,11 @@ class AccountAnalysisTableFiller extends AnalysisTableFiller {
   String getAnalysisTitle() {
     return "Accounts Analysis";
   }
+
+  @override
+  String getAnalysisKeys() {
+    return "Accounts";
+  }
 }
 
 class CategoryAnalysis extends AnalysisTableFiller {
@@ -103,10 +126,14 @@ class CategoryAnalysis extends AnalysisTableFiller {
         AnalysisController.instance.getTransactionsWithinRange();
     Map<String, List<Transaction>> result = {};
     transactions.forEach((element) {
-      if (!result.containsKey(element.category)) {
-        result[element.category!] = [];
+      String key = ExpenseCategoryManager.instance
+          .getCategory(element.category!)
+          .categoryName!;
+
+      if (!result.containsKey(key)) {
+        result[key] = [];
       }
-      result[element.category!]!.add(element);
+      result[key]!.add(element);
     });
     return result;
   }
@@ -115,40 +142,23 @@ class CategoryAnalysis extends AnalysisTableFiller {
   String getAnalysisTitle() {
     return "Category Analysis";
   }
+
+  @override
+  String getAnalysisKeys() {
+    return "Categories";
+  }
 }
 
 //create a singleton of this class
 //this class's instance will be the instance that the consumer will listen to
 //this class's instance will get its date change notification from the controller
 class AnalysisDateRangeChangeNotifier extends ChangeNotifier {
-  static AnalysisDateRangeChangeNotifier? _instance;
-  static AnalysisDateRangeChangeNotifier get instance {
-    _instance ??= AnalysisDateRangeChangeNotifier._();
-    return _instance!;
+  DateTime start = AnalysisController.instance.start;
+  DateTime end = AnalysisController.instance.end;
+  AnalysisDateRangeChangeNotifier() {
+    AnalysisController.instance.current = this;
   }
-
-  AnalysisDateRangeChangeNotifier._();
-
-  DateTime _start = DateTime.now().subtract(Duration(days: 30));
-  DateTime _end = DateTime.now();
-
-  DateTime get start {
-    return _start;
-  }
-
-  DateTime get end {
-    return _end;
-  }
-
-  set start(DateTime val) {
-    _start = val;
-    print("start changing");
-    notifyListeners();
-  }
-
-  set end(DateTime val) {
-    _end = val;
-    print("end changing");
+  wrappedNotify() {
     notifyListeners();
   }
 }

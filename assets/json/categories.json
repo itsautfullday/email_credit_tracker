@@ -43,7 +43,7 @@
     "undefined_category":{
         "assetPath":"assets/images/undefined_category.jpg",
         "categoryId":"undefined_category",
-        "categoryName":""
+        "categoryName":"Undefined"
         
     }
 }

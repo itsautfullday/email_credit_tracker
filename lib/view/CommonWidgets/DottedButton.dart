@@ -7,7 +7,7 @@ class DottedButton extends StatelessWidget {
   static const int ONLY_IMAGE =
       1; //TODO : Build when making the transactions screen
   static const int IMAGE_LEFT_TEXT_RIGHT =
-      2; //TODO : Build when adding google image to introduction button
+      2; //c : Build when adding google image to introduction button
   static const int TEXT_LEFT_IMAGE_RIGHT = 3; //TODO : Build when required
 
   Image? image;

@@ -1,8 +1,3 @@
-//More things needed : Analysis view : Switch for daily and monthly
-//Rebuild downstream via provider
-// 2 tables :    Account table and category table, percentage splits and top transactions
-// see if we can fetch more than the mails from last 100!
-
 import 'dart:convert';
 
 import 'package:email_credit_tracker/controller/AnalysisController.dart';
@@ -21,15 +16,15 @@ class AnalysisView extends StatelessWidget {
         body: Column(children: [
       AnalysisDateRange(),
       ChangeNotifierProvider(
-          create: (context) => AnalysisDateRangeChangeNotifier.instance,
+          create: (context) => AnalysisDateRangeChangeNotifier(),
           child: AnalysisTablesBlock())
     ]));
   }
 }
 
 class AnalysisDateRange extends StatelessWidget {
-  DateTime endDate = AnalysisController.instance.start;
-  DateTime startDate = AnalysisController.instance.end;
+  DateTime endDate = AnalysisController.instance.end;
+  DateTime startDate = AnalysisController.instance.start;
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +63,9 @@ class DateTextState extends State<DateText> {
 
           setState(() {
             if (annotation == "From") {
-              AnalysisDateRangeChangeNotifier.instance.start = newDate;
+              AnalysisController.instance.start = newDate;
             } else {
-              AnalysisDateRangeChangeNotifier.instance.end = newDate;
+              AnalysisController.instance.end = newDate;
             }
           });
         }
@@ -99,6 +94,7 @@ class AnalysisTablesBlockState extends State<AnalysisTablesBlock> {
         return Column(
           children: [
             AnalysisTable(AccountAnalysisTableFiller()),
+            SizedBox(height: 10),
             AnalysisTable(CategoryAnalysis())
           ],
         );
@@ -111,21 +107,43 @@ class AnalysisTable extends StatelessWidget {
   AnalysisTableFiller tableData;
   AnalysisTable(this.tableData);
 
+  List<DataColumn> getDataColumnValues() {
+    return [
+      DataColumn(label: Text(tableData.getAnalysisKeys())),
+      const DataColumn(label: Text('Σ Spends')),
+      const DataColumn(label: Text('% Spends'))
+    ];
+  }
+
+  List<DataRow> getDataRowsForUniqueKeys() {
+    List<DataRow> result = [];
+
+    Map<String, int> keysToTotals = tableData.getUniqueKeysToTotals();
+    Map<String, double> keysToPercs =
+        tableData.getUniqueKeysToPercentageOfTotal();
+    keysToTotals.forEach((key, value) {
+      result.add(DataRow(cells: [
+        DataCell(Text(key)),
+        DataCell(Text(value.toString())),
+        DataCell(Text(keysToPercs[key].toString()))
+      ]));
+    });
+
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Text(tableData.getAnalysisTitle()),
-        Text(tableData.getTotalSpend().toString()),
-        Text(jsonEncode(tableData.getUniqueKeysToTotals()))
+        Text("Total Spend : " + tableData.getTotalSpend().toString()),
+        DataTable(
+          // datatable widget
+          columns: getDataColumnValues(),
+          rows: getDataRowsForUniqueKeys(),
+        )
       ],
     );
   }
 }
-
-//Rough ideas for Analysis view:
-
-// First thing should be a total spend
-// Followed by 2 tables each with a header and 3 colums : Max transaction, Total spent, % of total spent
-// 1 for Categories, the other for accounts
-// Can create some parent child classes for both of these analysis tables and add them in a for loop? - yea
