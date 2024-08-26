@@ -1,0 +1,44 @@
+Building a transactions management application using Flutter
+
+For a while I had been looking for an expense tracker that suited my peculiar set of needs. Being in the data space myself, I love having data about myself but I want that to be automatically given to me.
+So I figured I'd use my few years of flutter development to good use and created a Simple Transaction Manager.
+
+Requirements from MVP:
+1. Auto ingest Debits - ignore credits :I was more concerned with how I am spending money, not with how I am earning it
+2. An account based split - I wanted a split between how much I am spending on my different accounts (HDFC Credit card, HDFC UPI etc) 
+3. Clean and Simple UI - I did not have a UI UX Person to help me out with this so I figured best to keep it simple and clean.
+
+On Further analysis I felt that I needed to add a few more requirements:
+4. Category based split - By introducing categories I felt that its also important to view the categorial spend split
+5. Email based transaction fetch : An email based fetch I felt was better than a text message based one as I felt that Transaction Emails were more structured and precise.
+6. Email based login: Due to the above requirement I needed a users explicit permission to read email and hence needed an Email based login
+
+
+Architectural decisions :
+1. Servers? For my MVP I felt that spinning up a server was unncessary. We're just parsing user's email and providing logging and analysis. Hence no need to set up a server as a source of truth.
+2. Application architure : MVVM : Having worked with MVC, I researched a bit to see whether its the best for my use case, but finally settled on MVVM as it provided a very clean way for view to interact with business logic
+3. UI : Extremely simple UI : rely very heavily on flutter themes and Material design toolkits for a good looking app. But it should be something I could mock on pen and paper.
+
+Top 3 learnings:
+1. How to integrate Google login using the firebase sdk and firebase projects.
+    To integrate a google sign in you must:
+    - Configure Firebase Project
+    - Add firebase and google sign in dependencies
+    - Configure the platforms for which the App has to allow sign in using the firebase command line tool
+    - You might need to activate google sign in in your firebase project via console
+    - Initialize Firebase in your main function:
+    - Implement google sign in as mentioned by your specific platform
+    You might face some hitches along the way but by doing this you should be able to get a google sign in working 
+    You can find the cookbook for this here : https://firebase.google.com/codelabs/firebase-auth-in-flutter-apps#0
+2. How to use the Gmail api in flutter.
+    Some resources I found useful during this:
+    - Read Gmail API Overview : https://developers.google.com/gmail/api/guides
+    - How to use google apis in flutter : https://docs.flutter.dev/data-and-backend/google-apis
+    What majorly helped was learning how the API worked in Python for fetching email and then exploring the Gmail API code in flutter to see whether analogous actions could be performed
+3. ChangeNotifiers and Consumers are an excellent way to manage state in a flutter application : if you're living in setState hell, I would recommend moving to ChangeNotifiers and consumers. 
+They allow for interacting with state items without the overhead of re building dependent items
+
+
+
+
+   
