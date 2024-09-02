@@ -19,7 +19,7 @@ Architectural decisions :
 2. Application architure : MVVM : Having worked with MVC, I researched a bit to see whether its the best for my use case, but finally settled on MVVM as it provided a very clean way for view to interact with business logic
 3. UI : Extremely simple UI : rely very heavily on flutter themes and Material design toolkits for a good looking app. But it should be something I could mock on pen and paper.
 
-Top 3 learnings:
+Top 4 learnings:
 1. How to integrate Google login using the firebase sdk and firebase projects.
     To integrate a google sign in you must:
     - Configure Firebase Project
@@ -36,7 +36,16 @@ Top 3 learnings:
     - How to use google apis in flutter : https://docs.flutter.dev/data-and-backend/google-apis
     What majorly helped was learning how the API worked in Python for fetching email and then exploring the Gmail API code in flutter to see whether analogous actions could be performed
 3. ChangeNotifiers and Consumers are an excellent way to manage state in a flutter application : if you're living in setState hell, I would recommend moving to ChangeNotifiers and consumers. 
+Read more about them here : <add consumers and change notifiers example>
 They allow for interacting with state items without the overhead of re building dependent items
+4. Invest in letting the framework help you : Since I had a fairly clear idea in mind for what I wanted the application to look like I decided that I will use themes and I will not micro manage the way the application looks using pixel coding. Instead I preferred using Alignments, Centers and other relative view widgets that matched the aesthetic I wanted without needing to specify pixel level data.
+
+Notes on some major flows for the application: 
+1. Transaction life cycle 
+2. Auto creation of transactions 
+3. Analysis view for transactions
+
+
 
 
 
